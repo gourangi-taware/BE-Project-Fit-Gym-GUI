@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/gourangi-taware/BE-Project-Fit-Gym-GUI#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "@mediapipe/pose": "^0.5.1635988162",
+    "express": "^4.17.2",
+    "requirejs": "^2.3.6"
   }
 }
