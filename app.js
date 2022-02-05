@@ -14,7 +14,6 @@ app.get('/exercise', (req, res) => {
   
 });
 
-app.post('/')
 
 var port = process.env.PORT || 5000;
 
