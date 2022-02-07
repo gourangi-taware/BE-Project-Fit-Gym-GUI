@@ -14,6 +14,11 @@ app.get('/exercise', (req, res) => {
   
 });
 
+app.get('/bicepcurl', (req, res) => {
+    res.sendFile("bicepcurl.html", { root: __dirname + "/views" });
+  
+});
+
 
 var port = process.env.PORT || 5000;
 
