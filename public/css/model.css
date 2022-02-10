@@ -1,0 +1,104 @@
+#h1 { text-indent: 5em;
+    
+    }
+#xx{
+	margin: 30px auto;
+}
+#up{
+
+	margin-top: 8rem;
+}
+#tut{ float: right;}
+#divison{
+	display: flex;
+	flex-direction: row; 
+	flex-wrap: nowrap;
+}
+#container {
+	margin: 30px auto;
+	margin-left: 50px auto;
+	
+	width: 800px;
+	height: 575px;
+	border: 10px #333 solid;
+}
+#videoElement {
+	width: 782px;
+	height: 556px;
+	background-color: #666;
+}
+
+body {
+  background-color:#ccbfbe;
+  color: #ccbfbe;
+  
+}
+
+h1 {
+  font-size: 48px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 200;
+
+  text-align: center;
+  line-height: 59px;
+
+  padding: 0 64px;
+  margin: 0;
+}
+
+.stopwatch {
+  display: grid;
+  justify-items: center;
+  grid-row-gap: 23px;
+  width: 100%;
+  padding-top: 25px;
+}
+
+.circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 270px;
+  width: 270px;
+
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.time {
+  font-family: "Roboto Mono", monospace;
+  font-weight: 300;
+  font-size: 48px;
+}
+
+.gold {
+  font-weight: 900;
+
+  color: #f2c94c;
+  text-shadow: 0 0 0px #fff, 0 0 50px #f2c94c;
+}
+
+.controls {
+  display: flex;
+  justify-content: space-between;
+
+  width: 187px;
+}
+
+button {
+  cursor: pointer;
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin: 0;
+  outline: none;
+}
+
+#playButton {
+  display: block;
+}
+
+#pauseButton {
+  display: none;
+}
