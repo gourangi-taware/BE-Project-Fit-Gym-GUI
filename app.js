@@ -36,6 +36,30 @@ app.get('/wall-push-ups', (req, res) => {
     res.sendFile("wall-push-ups.html", { root: __dirname + "/views" });  
 });
 
+app.get('/bicepcurlmodel', (req, res) => {
+    res.sendFile("bicepcurlmodel.html", { root: __dirname + "/views" });  
+});
+
+app.get('/squatsmodel', (req, res) => {
+    res.sendFile("squatsmodel.html", { root: __dirname + "/views" });  
+});
+
+app.get('/lungesmodel', (req, res) => {
+    res.sendFile("lungesmodel.html", { root: __dirname + "/views" });  
+});
+
+app.get('/pushupsmodel', (req, res) => {
+    res.sendFile("pushupsmodel.html", { root: __dirname + "/views" });  
+});
+
+app.get('/jumpingjacksmodel', (req, res) => {
+    res.sendFile("jumpingjacksmodel.html", { root: __dirname + "/views" });  
+});
+
+app.get('/wall-push-ups-model', (req, res) => {
+    res.sendFile("wall-push-ups-model.html", { root: __dirname + "/views" });  
+});
+
 var port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("server running at port " + port));
