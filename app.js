@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
 
 //mongo db connection
-mongoose.connect('mongodb://localhost:27017/myapp');
+mongoose.connect('mongodb://localhost:27017/fitapp');
 
 app.set('view engine', 'html');
 app.engine('html', require('ejs').renderFile);
@@ -13,6 +13,7 @@ app.engine('html', require('ejs').renderFile);
 //router pages
 const exercises = require("./routes/exercise");
 const models=require("./routes/models");
+const register = require("./routes/register");
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname + "/public")));
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname + "/public")));
 //routes
 app.use("/exercise", exercises.routes);
 app.use("/models",models.routes);
+app.use("/register",register.routes);
 
 //routes
 app.get('/', (req, res) => {
