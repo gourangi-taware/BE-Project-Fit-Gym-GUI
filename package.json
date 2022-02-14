@@ -20,7 +20,10 @@
   "homepage": "https://github.com/gourangi-taware/BE-Project-Fit-Gym-GUI#readme",
   "dependencies": {
     "@mediapipe/pose": "^0.5.1635988162",
+    "body-parser": "^1.19.1",
+    "ejs": "^3.1.6",
     "express": "^4.17.2",
+    "mongoose": "^6.2.1",
     "requirejs": "^2.3.6"
   }
 }

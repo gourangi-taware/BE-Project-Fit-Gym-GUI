@@ -1,10 +1,27 @@
 const express = require('express')
 const app = express();
 var path = require("path");
+const mongoose = require('mongoose');
+const bodyParser = require("body-parser");
 
-//app.set("view engine", "ejs");
+//mongo db connection
+mongoose.connect('mongodb://localhost:27017/myapp');
+
+app.set('view engine', 'html');
+app.engine('html', require('ejs').renderFile);
+
+//router pages
+const exercises = require("./routes/exercise");
+const models=require("./routes/models");
+
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname + "/public")));
 
+//routes
+app.use("/exercise", exercises.routes);
+app.use("/models",models.routes);
+
+//routes
 app.get('/', (req, res) => {
     res.sendFile("index.html", { root: __dirname + "/views" });
 });
@@ -13,52 +30,7 @@ app.get('/exercise', (req, res) => {
     res.sendFile("exercise.html", { root: __dirname + "/views" });
 });
 
-app.get('/bicepcurl', (req, res) => {
-    res.sendFile("bicepcurl.html", { root: __dirname + "/views" });
-});
 
-app.get('/squats', (req, res) => {
-    res.sendFile("squats.html", { root: __dirname + "/views" });
-});
-
-app.get('/jumpingjacks', (req, res) => {
-    res.sendFile("jumpingjacks.html", { root: __dirname + "/views" });
-});
-app.get('/pushups', (req, res) => {
-    res.sendFile("pushups.html", { root: __dirname + "/views" });
-});
-
-app.get('/lunges', (req, res) => {
-    res.sendFile("lunges.html", { root: __dirname + "/views" });
-});
-
-app.get('/wall-push-ups', (req, res) => {
-    res.sendFile("wall-push-ups.html", { root: __dirname + "/views" });  
-});
-
-app.get('/bicepcurlmodel', (req, res) => {
-    res.sendFile("bicepcurlmodel.html", { root: __dirname + "/views" });  
-});
-
-app.get('/squatsmodel', (req, res) => {
-    res.sendFile("squatsmodel.html", { root: __dirname + "/views" });  
-});
-
-app.get('/lungesmodel', (req, res) => {
-    res.sendFile("lungesmodel.html", { root: __dirname + "/views" });  
-});
-
-app.get('/pushupsmodel', (req, res) => {
-    res.sendFile("pushupsmodel.html", { root: __dirname + "/views" });  
-});
-
-app.get('/jumpingjacksmodel', (req, res) => {
-    res.sendFile("jumpingjacksmodel.html", { root: __dirname + "/views" });  
-});
-
-app.get('/wall-push-ups-model', (req, res) => {
-    res.sendFile("wall-push-ups-model.html", { root: __dirname + "/views" });  
-});
 
 var port = process.env.PORT || 5000;
 
