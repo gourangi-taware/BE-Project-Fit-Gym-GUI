@@ -1,8 +1,3 @@
-Thank you for using our template!
+AI Based Workout Assistant and Fitness Guide
 
-For more awesome templates please visit https://colorlib.com/wp/templates/
-
-Copyright information for the template can't be altered/removed unless you purchase a license.
-More information about the license is available here: https://colorlib.com/wp/licence/
-
-Removing copyright information without the license will result in suspension of your hosting and/or domain name(s).
+We introduce Fitcercise, an application that detects the user’s exercise pose counts the specified exercise repetitions and provides personalized, detailed recommendations on how the user can improve their form. The application uses the MediaPipe to detect a person’s pose, and afterwards analyses the geometry of the pose from the dataset and real-time video and counts the repetitions of the particular exercise.
