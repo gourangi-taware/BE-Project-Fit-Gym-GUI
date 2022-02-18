@@ -5,33 +5,33 @@ const express = require('express');
 const router = express.Router();
 const users=[];
 
+router.post('/register', function(req, res, next) {
+  // Get Form Values
+  console.log("Registering");
+  console.log(req.body);
 
-router.get('/register-user', (req, res, next) => {
-  users.push({username:"Gourangi",password:"Taware",phone:"9730545892",email:"gourangi0309@gmail.com",age:"22",height:5.2,weight:50,dob:"03/09/2000",gender:"female"});
-  var username="Gourangi";
-  var password="Taware";
-  var phone="9730545892";
-  var email="gourangi0309@gmail.com";
-  var age=22;
-  var height=5.2;
-  var weight=50;
-  var dob="03/09/2000";
-  var gender="female";
-  
-  var userdata={
-    username:username,
-    password:password,
-    phone:phone,
-    email:email,
-    age:age,
-    height:height,
-    weight:weight,
-    dob:dob,
-    gender:gender
-  };
-  new User(userdata).save();
-   res.redirect('/');
+
+  new User(req.body).save();
+  return res.send(req.body);
+  // res.redirect(301,'/exercise/bicepcurl');
+  // try{
+  //   console.log("In flash");
+  //   req.flash('success', 'This is a flash message using the express-flash module.');
+  // }
+  // catch(err){
+  //   console.log("Error in flash");
+  //   console.log(err);
+  // }
+  // try{
+  //   console.log("In redirect");
+  //   res.redirect(301,'/');
+  // }
+  // catch(err){
+  //   console.log("Error in redirect");
+  //   console.log(err);
+  // }
+
+ 
 });
-
 exports.routes = router;
 exports.users=users;

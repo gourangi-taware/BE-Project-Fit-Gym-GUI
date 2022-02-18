@@ -45,13 +45,100 @@
 		} 
 
 		//IMPORTANT - REMOVE THIS - it's just to show/hide error messages in the demo
-		this.blocks[0].getElementsByTagName('form')[0].addEventListener('submit', function(event){
-			event.preventDefault();
-			self.toggleError(document.getElementById('signin-email'), true);
-		});
+		// this.blocks[0].getElementsByTagName('form')[0].addEventListener('submit', function(event){
+		// 	event.preventDefault();
+		// 	self.toggleError(document.getElementById('signin-email'), true);
+		// });
 		this.blocks[1].getElementsByTagName('form')[0].addEventListener('submit', function(event){
-			event.preventDefault();
-			self.toggleError(document.getElementById('signup-username'), true);
+			console.log("Click SUbmit Register");
+        var username=  $("#signup-username").val();
+        var password= $("#signup-password").val();
+        var password2= $("#signup-password2").val();
+        var name=$("#signup-name").val(); 
+        var phone= $("#signup-phone").val();
+        var email= $("#signup-email").val();
+        var age=$("#signup-age").val(); 
+        var height=$("#signup-height").val(); 
+        var weight= $("#signup-weight").val();
+        var dob= $("#signup-dob").val();
+        var gender=$("#gender").val(); 
+
+        event.preventDefault();
+        if($("#signup-username").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-username'), true);
+        }
+		else if($("#signup-password").val()=="")
+		{
+			self.toggleError(document.getElementById('signup-password'), true);
+		}
+        else if($("#signup-password").val()!=$("#signup-password2").val())
+        {
+            self.toggleError(document.getElementById('signup-password2'), true);
+        }
+        else if($("#signup-name").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-name'), true);
+        }
+        else if($("#signup-phone").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-phone'), true);
+        }
+        else if($("#signup-email").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-email'), true);
+        }
+        else if($("#signup-age").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-age'), true);
+        }
+        else if($("#signup-height").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-height'), true);
+        }
+        else if($("#signup-weight").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-weight'), true);
+        }
+        else if($("#signup-dob").val()=="")
+        {
+            self.toggleError(document.getElementById('signup-dob'), true);
+        }
+        else{
+            var formData = {
+                username:username,
+                password:password,
+             //    password2:password2,
+                name:name,
+                phone:phone,
+                email:email,
+                age:age,
+                height:height,
+                weight:weight,
+                dob:dob,
+                gender:"gender"
+               };
+           
+               // DO POST
+               $.ajax({
+                 type: "POST",
+                 contentType: "application/json",
+                 url: "register/register",
+                 data: JSON.stringify(formData),
+                 dataType: "json",
+                 success: function (answers) {
+					console.log("In success");
+					console.log(answers);
+					removeClass(self.element, 'cd-signin-modal--is-visible');
+                   console.log("In success");
+                 },
+                 error: function (e) {
+                //    alert("Error!");
+                   console.log("ERROR: ", e);
+                 },
+               });
+        }
+
 		});
 	};
 

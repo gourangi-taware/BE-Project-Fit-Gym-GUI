@@ -5,26 +5,26 @@ const models = require('./models');
 const router = express.Router();
 
 router.get('/bicepcurlmodel', (req, res) => {
-    res.render('bicepcurlmodel.html');  
+    res.sendFile('bicepcurlmodel.html',{ root: path.join(__dirname, '../views')});  
 });
 
 router.get('/squatsmodel', (req, res) => {
-    res.render('squatsmodel.html');  
+    res.sendFile('squatsmodel.html',{ root: path.join(__dirname, '../views')});  
 });
 
 router.get('/lungesmodel', (req, res) => {
-    res.render('lungesmodel.html');  
+    res.sendFile('lungesmodel.html',{ root: path.join(__dirname, '../views')}); 
 });
 
 router.get('/pushupsmodel', (req, res) => {
-    res.render('pushupsmodel.html');  
+    res.sendFile('pushupsmodel.html',{ root: path.join(__dirname, '../views')}); 
 });
 
 router.get('/jumpingjacksmodel', (req, res) => {
-    res.render('jumpingjacksmodel.html');  
+    res.sendFile('jumpingjacksmodel.html',{ root: path.join(__dirname, '../views')});  
 });
 
 router.get('/wall-push-ups-model', (req, res) => {
-    res.render('wall-push-ups-model.html');  
+    res.sendFile('bicepcurlmodel.html',{ root: path.join(__dirname, '../views')});  
 });
 exports.routes = router;

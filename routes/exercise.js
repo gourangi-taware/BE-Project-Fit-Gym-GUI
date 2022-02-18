@@ -2,30 +2,31 @@ const path = require('path');
 
 const express = require('express');
 const exercise = require('./exercise');
+const { dirname } = require('path');
 const router = express.Router();
 
 
 router.get('/bicepcurl', (req, res) => {
-    res.render('bicepcurl.html');
+    res.sendFile("bicepcurl.html", { root: path.join(__dirname, '../views')});
 });
 
 router.get('/squats', (req, res) => {
-    res.render('squats.html');
+    res.sendFile("squats.html", { root: path.join(__dirname, '../views')});
 });
 
 router.get('/jumpingjacks', (req, res) => {
-    res.render('jumpingjacks.html');
+    res.sendFile("jumpingjacks.html", { root: path.join(__dirname, '../views')});
 });
 router.get('/pushups', (req, res) => {
-    res.render('pushups.html');
+    res.sendFile("pushups.html", { root: path.join(__dirname, '../views')});
 });
 
 router.get('/lunges', (req, res) => {
-    res.render('lunges.html');
+    res.sendFile("lunges.html", { root: path.join(__dirname, '../views')});
 });
 
 router.get('/wall-push-ups', (req, res) => {
-    res.render('wall-push-ups.html');  
+    res.sendFile("wall-push-ups.html", { root: path.join(__dirname, '../views')});
 });
 
 exports.routes = router;

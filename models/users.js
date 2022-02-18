@@ -8,6 +8,9 @@ const Schema = mongoose.Schema
     password:{
         type : String
     },
+    name:{
+        type:String
+    },
     phone:{
         type : String
     },

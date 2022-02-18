@@ -10331,3 +10331,22 @@ x sigin/signup popup
 .cd-signin-modal__block.cd-signin-modal__block--is-selected {
   display: block;
 }
+/* .custom-control-input:before .custom-control-label::before {
+  color: #fff;
+  border-color: #007bff;
+  background-color: #007bff;
+  width: 50px;
+  height: 50px;
+} */
+.custom-radio .custom-control-label::before{
+  width: 20px;
+  height: 20px;
+  padding-right: 2%;
+  margin-right: 2%;
+}
+.custom-radio .custom-control-label::after{
+  width: 20px;
+  height: 20px;
+  padding-right: 2%;
+  margin-right: 2%;
+}
