@@ -40,6 +40,13 @@ app.get('/signup', (req, res) => {
     res.sendFile("signup.html", { root: __dirname + "/views" });
 });
 
+app.get('/bicepcurl', (req, res) => {
+    res.sendFile("bicepcurl.html", { root: __dirname + "/views" });
+});
+
+app.get('/squats', (req, res) => {
+    res.sendFile("squats.html", { root: __dirname + "/views" });
+});
 
 
 var port = process.env.PORT || 5000;

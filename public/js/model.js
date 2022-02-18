@@ -1,12 +1,17 @@
-const videoElement = document.getElementsByClassName('input_video')[0];
-const canvasElement = document.getElementsByClassName('output_canvas')[0];
+console.log("BicepCurl model connected.");
+const videoElement = document.getElementById('videoModel');
+const canvasElement = document.getElementById('canvasModel');
+
+canvasElement.style.width='100%';
+canvasElement.style.height='100%';
+canvasElement.width  = canvasElement.offsetWidth;
+canvasElement.height = canvasElement.offsetHeight;
+
 const canvasCtx = canvasElement.getContext('2d');
-const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
-const grid = new LandmarkGrid(landmarkContainer);
-    
+
 function onResults(results) {
     if (!results.poseLandmarks) {
-        grid.updateLandmarks([]);
+        // grid.updateLandmarks([]);
         return;
     }
 
@@ -21,7 +26,7 @@ function onResults(results) {
     // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     // Only overwrite missing pixels.
-    canvasCtx.globalCompositeOperation = 'destination-atop';
+    // canvasCtx.globalCompositeOperation = 'destination-atop';
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
     canvasCtx.globalCompositeOperation = 'source-over';
@@ -29,12 +34,15 @@ function onResults(results) {
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
     canvasCtx.restore();
 
-    grid.updateLandmarks(results.poseWorldLandmarks);
+    // grid.updateLandmarks(results.poseWorldLandmarks);
 }
+// const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
+// const grid = new LandmarkGrid(landmarkContainer);
     
 const pose = new Pose({locateFile: (file) => {
     return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
 }});
+
 pose.setOptions({
     modelComplexity: 1,
     smoothLandmarks: true,
@@ -43,6 +51,7 @@ pose.setOptions({
     minDetectionConfidence: 0.5,
     minTrackingConfidence: 0.5
 });
+
 pose.onResults(onResults);
     
 const camera = new Camera(videoElement, {

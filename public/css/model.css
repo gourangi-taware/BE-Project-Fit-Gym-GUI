@@ -22,10 +22,16 @@
 	height: 575px;
 	border: 10px #333 solid;
 }
-#videoElement {
+#videoModel {
 	width: 782px;
 	height: 556px;
 	background-color: #666;
+}
+
+#canvasModel{
+  transform: rotateY(180deg);
+  -webkit-transform:rotateY(180deg); /* Safari and Chrome */
+  -moz-transform:rotateY(90deg); /* Firefox */
 }
 
 body {
