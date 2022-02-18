@@ -7,9 +7,9 @@ const users=[];
 
 
 router.get('/register-user', (req, res, next) => {
-  users.push({firstname:"Gourangi",lastname:"Taware",phone:"9730545892",email:"gourangi0309@gmail.com",age:"22",height:5.2,weight:50,dob:"03/09/2000",gender:"female"});
-  var firstname="Gourangi";
-  var lastname="Taware";
+  users.push({username:"Gourangi",password:"Taware",phone:"9730545892",email:"gourangi0309@gmail.com",age:"22",height:5.2,weight:50,dob:"03/09/2000",gender:"female"});
+  var username="Gourangi";
+  var password="Taware";
   var phone="9730545892";
   var email="gourangi0309@gmail.com";
   var age=22;
@@ -19,8 +19,8 @@ router.get('/register-user', (req, res, next) => {
   var gender="female";
   
   var userdata={
-    firstname:firstname,
-    lastname:lastname,
+    username:username,
+    password:password,
     phone:phone,
     email:email,
     age:age,

@@ -32,7 +32,6 @@ app.get('/exercise', (req, res) => {
     res.sendFile("exercise.html", { root: __dirname + "/views" });
 });
 
-<<<<<<< HEAD
 app.get('/login', (req, res) => {
     res.sendFile("login.html", { root: __dirname + "/views" });
 });
@@ -41,15 +40,6 @@ app.get('/signup', (req, res) => {
     res.sendFile("signup.html", { root: __dirname + "/views" });
 });
 
-app.get('/bicepcurl', (req, res) => {
-    res.sendFile("bicepcurl.html", { root: __dirname + "/views" });
-});
-
-app.get('/squats', (req, res) => {
-    res.sendFile("squats.html", { root: __dirname + "/views" });
-});
-=======
->>>>>>> ad8c5123e811f23a4a1839b6b58b3ad800a6c6a9
 
 
 var port = process.env.PORT || 5000;
