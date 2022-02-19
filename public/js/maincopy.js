@@ -128,8 +128,9 @@
                  dataType: "json",
                  success: function (answers) {
 					console.log("In success");
+					location.href="/";
 					console.log(answers);
-					removeClass(self.element, 'cd-signin-modal--is-visible');
+					//removeClass(self.element, 'cd-signin-modal--is-visible');
                    console.log("In success");
                  },
                  error: function (e) {

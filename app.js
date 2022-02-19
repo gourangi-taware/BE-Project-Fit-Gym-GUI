@@ -3,17 +3,36 @@ const app = express();
 var path = require("path");
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
-var flash = require('connect-flash');
-var session = require('express-session');
-var passport = require('passport');
-const { engine } = require('express-handlebars');
 var cookieParser = require('cookie-parser');
+var session = require('express-session');
+var flash = require('express-flash');
+const { engine } = require('express-handlebars');
+
 //mongo db connection
 mongoose.connect('mongodb://localhost:27017/fitapp');
 
-
+var sessionStore = new session.MemoryStore;
 app.engine('handlebars',engine({ defaultLayout: false }));
 app.set('view engine', 'handlebars');
+
+
+app.use(cookieParser('secret'));
+app.use(session({
+    cookie: { maxAge: 60000 },
+    store: sessionStore,
+    saveUninitialized: true,
+    resave: 'true',
+    secret: 'secret'
+}));
+app.use(flash());
+
+// Custom flash middleware -- from Ethan Brown's book, 'Web Development with Node & Express'
+app.use(function(req, res, next){
+    // if there's a flash message in the session request, make it available in the response, then delete it
+    res.locals.sessionFlash = req.session.sessionFlash;
+    delete req.session.sessionFlash;
+    next();
+});
 
 //router pages
 const exercises = require("./routes/exercise");
@@ -34,7 +53,7 @@ app.use("/register",register.routes);
 
 //routes
 app.get('/', (req, res) => {
-    res.render('index');
+    res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
 });
 
 app.get('/exercise', (req, res) => {

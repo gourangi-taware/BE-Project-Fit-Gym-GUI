@@ -12,6 +12,8 @@ router.post('/register', function(req, res, next) {
 
 
   new User(req.body).save();
+  req.flash('success', 'User Registered Successfully!');
+  //res.redirect('exercise/bicepcurl');
   return res.send(req.body);
   // res.redirect(301,'/exercise/bicepcurl');
   // try{

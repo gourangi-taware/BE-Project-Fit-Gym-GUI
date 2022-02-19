@@ -68,6 +68,15 @@
   			</div>
   		</div>
 	  </nav>
+	{{#if expressFlash}}
+		<p><strong>FLASH!</strong> {{ expressFlash }}</p>
+	{{/if}}
+
+	{{#if sessionFlash.message}}
+		<div class="{{ sessionFlash.type }}">
+			<strong>FLASH!</strong> {{ sessionFlash.message }}
+		</div>
+	{{/if}}
 	  <div class="cd-signin-modal js-signin-modal"> <!-- this is the entire modal form, including the background -->
 		<div class="cd-signin-modal__container"> <!-- this is the container wrapper -->
 			<ul class="cd-signin-modal__switcher js-signin-modal-switcher js-signin-modal-trigger">
