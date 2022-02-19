@@ -3,18 +3,16 @@ const app = express();
 var path = require("path");
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
-var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var flash = require('express-flash');
 const { engine } = require('express-handlebars');
-
+var cookieParser = require('cookie-parser');
 //mongo db connection
 mongoose.connect('mongodb://localhost:27017/fitapp');
 
 var sessionStore = new session.MemoryStore;
 app.engine('handlebars',engine({ defaultLayout: false }));
 app.set('view engine', 'handlebars');
-
 
 app.use(cookieParser('secret'));
 app.use(session({
@@ -54,6 +52,7 @@ app.use("/register",register.routes);
 //routes
 app.get('/', (req, res) => {
     res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
+
 });
 
 app.get('/exercise', (req, res) => {
