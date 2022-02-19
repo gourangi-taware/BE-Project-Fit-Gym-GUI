@@ -69,12 +69,17 @@
   		</div>
 	  </nav>
 	{{#if expressFlash}}
-		<p><strong>FLASH!</strong> {{ expressFlash }}</p>
+		<div class="notice success"><i class="icon-remove-sign icon-large"></i> {{ expressFlash }}
+		<a href="#close" class="icon-remove"></a></div>
+		
 	{{/if}}
 
 	{{#if sessionFlash.message}}
 		<div class="{{ sessionFlash.type }}">
-			<strong>FLASH!</strong> {{ sessionFlash.message }}
+			<div class="notice success"><i class="icon-remove-sign icon-large"></i> {{sessionFlash.message}}
+			<a href="#close" class="icon-remove"></a></div>
+			
+			
 		</div>
 	{{/if}}
 	  <div class="cd-signin-modal js-signin-modal"> <!-- this is the entire modal form, including the background -->
@@ -730,6 +735,13 @@
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
   <script src="js/login.js"></script>
- 
+<script>
+	$(document).on('click', '.notice a[class^="icon-remove"]', function(e){
+		e.preventDefault();
+		var notice = $(this).parents('.notice');
+		$(this).hide();
+		notice.fadeOut('slow');
+	});
+</script>
   </body>
 </html>

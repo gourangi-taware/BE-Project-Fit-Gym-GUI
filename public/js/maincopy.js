@@ -142,7 +142,7 @@
 
 		});
 	};
-
+	
 	ModalSignin.prototype.togglePassword = function(target) {
 		var password = target.previousElementSibling;
 		( 'password' == password.getAttribute('type') ) ? password.setAttribute('type', 'text') : password.setAttribute('type', 'password');
