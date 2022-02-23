@@ -26,14 +26,14 @@ function onResults(results) {
     // canvasCtx.fillRect(0, 0, canvasElement.width, canvasElement.height);
 
     // Only overwrite missing pixels.
-    // canvasCtx.globalCompositeOperation = 'destination-atop';
+    canvasCtx.globalCompositeOperation = 'destination-atop';
     canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
 
     canvasCtx.globalCompositeOperation = 'source-over';
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 4});
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
     canvasCtx.restore();
-
+    console.log("moz kardi");
     // grid.updateLandmarks(results.poseWorldLandmarks);
 }
 // const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
