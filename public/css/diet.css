@@ -1,0 +1,14 @@
+
+.days a{
+    /* margin-right: 2.5% !important; */
+    width: 100% !important;
+    margin-right: 5% !important;
+}
+
+.btn.btn-outline-primary {
+    border: 1px solid #ffb5b5;
+    background: transparent;
+    color: #ffb5b5;
+    width: 150px !important;
+    margin-right: 25px !important;
+}

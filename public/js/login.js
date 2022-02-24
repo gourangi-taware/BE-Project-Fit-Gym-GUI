@@ -2,8 +2,18 @@ $(document).ready(function () {
 
     $("#loginSubmit").click(function (event) {
         event.preventDefault();
+
         var loginemail=$("#login-email").val();
         var loginpassword=$("#login-password").val();
+        if(loginemail=="")
+        {
+            
+        }
+        else if(loginpassword=="")
+        {
+
+        }
+        else{
         console.log(loginemail);
         console.log(loginpassword);
         console.log("In login js");
@@ -30,6 +40,6 @@ $(document).ready(function () {
                console.log("ERROR: ", e);
              },
            });
-    
+         }
       });
 });

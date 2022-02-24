@@ -54,9 +54,17 @@ app.get('/', (req, res) => {
     res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
 
 });
+app.get('/index.html', (req, res) => {
+    res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
+
+});
 
 app.get('/exercise', (req, res) => {
     res.sendFile("exercise.html", { root: __dirname + "/views" });
+});
+
+app.get('/diet', (req, res) => {
+    res.sendFile("diet.html", { root: __dirname + "/views" });
 });
 
 
