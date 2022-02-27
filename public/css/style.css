@@ -10351,8 +10351,8 @@ x sigin/signup popup
   margin-right: 2%;
 }
 .notice.warning{}/*default*/
-	.notice.error{border:1px solid red;background:pink;color:red;}
-	.notice.success{border:1px solid green;background:lightgreen;color:green;}
+	.notice.error{border:1px solid red;background:pink;color:red;padding: 0.3% 0%;}
+	.notice.success{border:1px solid green;background:lightgreen;color:green;padding: 0.3% 0%;}
 	.notice i[class*='fa-']{position:absolute;top:50%;left:0.8em;margin-top:-0.6em;}
 	.notice a[class*='fa-remove'],
 	.notice a[class*='fa-remove']:active,
