@@ -1,6 +1,7 @@
 console.log("BicepCurl model connected.");
 const videoElement = document.getElementById('videoModel');
 const canvasElement = document.getElementById('canvasModel');
+const counterElement = document.getElementById('counter');
 
 canvasElement.style.width='100%';
 canvasElement.style.height='100%';
@@ -10,6 +11,8 @@ canvasElement.height = canvasElement.offsetHeight;
 const canvasCtx = canvasElement.getContext('2d');
 
 let bicepAngle = 180;
+let count = 0;
+let eccentric = false;
 
 function onResults(results) {
     canvasCtx.save();
@@ -38,27 +41,53 @@ function onResults(results) {
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 4});
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
 
-    // Process pose Landmarks.
-    // Right shoulder, elbow, wrist.
-    const rightShoulderPoint = results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER];
-    const rightElbowPoint = results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW];
-    const rightWristPoint = results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST];
+    // console.log(results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility);
 
-    bicepAngle = rad_to_deg(find_angle(rightWristPoint, rightElbowPoint, rightShoulderPoint));
-    canvasCtx.fillStyle = "#00FF00";
-    canvasCtx.fillRect(25, 25, 100, ((180 - bicepAngle) / 180) * 100);
-    canvasCtx.rect(25, 25, 100, 100);
-    canvasCtx.stroke();
-    
-    if (bicepAngle < 90){
-        console.log("REP DONE");
+    if (results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].visibility > 0.75 && results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility > 0.75 && results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].visibility > 0.75){
+        console.log("TRUE");
+        bicepAngle = getBicepAngle(results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+        canvasCtx.fillStyle = "#00FF00";
+        canvasCtx.fillRect(25, 25, 100, toRepMeter(bicepAngle, toRepMeter(bicepAngle, 100)));
+        canvasCtx.rect(25, 25, 100, 100);
+        canvasCtx.stroke();
+        
+        if (bicepAngle < 45 && !eccentric){
+            // console.log("REP DONE");
+            count += 1;
+            eccentric = true;
+            counterElement.innerHTML = count;
+        }
+        else if (bicepAngle > 150){
+            eccentric = false;
+        }
     }
+
+    // console.log(count);
+
     canvasCtx.restore();
 
     // grid.updateLandmarks(results.poseLandmarks);
 }
 
-function find_angle(L,M,R) {
+function getBicepAngle(shoulder, elbow, wrist){
+    return rad_to_deg(find_angle_rad(shoulder, elbow, wrist));
+}
+
+function bicepCheck(poseLandmarks){
+    bicepAngle = getBicepAngle(results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+}
+
+function toRepMeter(angle, height){
+    if (angle < 45){
+        angle = 45;
+    }
+    else if (angle > 150){
+        angle = 150;
+    }
+    return ((angle - 45) / 105) * height;
+}
+
+function find_angle_rad(L,M,R) {
     var AB = Math.sqrt(Math.pow(M.x-L.x,2)+ Math.pow(M.y-L.y,2));    
     var BC = Math.sqrt(Math.pow(M.x-R.x,2)+ Math.pow(M.y-R.y,2)); 
     var AC = Math.sqrt(Math.pow(R.x-L.x,2)+ Math.pow(R.y-L.y,2));
