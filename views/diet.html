@@ -1,190 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <title>Meditative - Free Bootstrap 4 Template by Colorlib</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>Munch - Clarifai + Wolfram Demo </title>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="js/predict.js"></script>
+  <script type="text/javascript" src="https://s3.amazonaws.com/static.mlh.io/blog-code/2018-02-clarifai-nutrition-app/wolfram.js"></script>
+  <!-- <script type="text/javascript" src="C:\Users\Gourangi\Downloads\clarifai-food-nutrition-demo-master\predict.js"></script> -->
+  <link rel="stylesheet" type="text/css" href="https://s3.amazonaws.com/static.mlh.io/blog-code/2018-02-clarifai-nutrition-app/app.css" />
+</head>
+<body>
+  <div class="wrapper">
+    <h1>What are you eating?</h1>
+    <h2>Snap a photo of your food & upload for a nutritional breakdown.</h2>
 
-    <link href="https://fonts.googleapis.com/css?family=EB+Garamond:400,400i,500,500i,600,600i,700,700i&display=swap" rel="stylesheet">
+    <form action="#">
+      <input type="file" id="filename" placeholder="Filename" size="100"/>
+      <button onclick="predict_click($('#filename').val(), 'file'); return false;">Get my Nutritional Breakdown!</button>
+    </form>
 
-    <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
-    <link rel="stylesheet" href="css/owl.carousel.min.css">
-    <link rel="stylesheet" href="css/owl.theme.default.min.css">
-    <link rel="stylesheet" href="css/magnific-popup.css">
-
-    <link rel="stylesheet" href="css/aos.css">
-
-    <link rel="stylesheet" href="css/ionicons.min.css">
-
-    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
-    <link rel="stylesheet" href="css/jquery.timepicker.css">
-
-    
-    <link rel="stylesheet" href="css/flaticon.css">
-    <link rel="stylesheet" href="css/icomoon.css">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/diet.css">
-  </head>
-  <body>
-  
-    <!-- END nav -->
-
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_3.jpg');height:300px !important" data-stellar-background-ratio="1">
-      <div class="overlay"></div>
-      <div class="container">
-        <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-          <div class="col-md-9 ftco-animate text-center" >
-            <h1 class="mb-3 bread" style="text-align: left !important;font-size: 70px;">Diet Plan</h1>
-            <p class="breadcrumbs" style="text-align: left !important;font-size: 20px;padding-left: 10px;"><span class="mr-2"><a href="index.html">Home</a></span> <span>Classes</span></p>
-          </div>
-        </div>
+    <div id="predictions">
+      <div class="food-photo">
+        <div class="step"><span>1</span> Upload a Photo</div>
       </div>
-    </section>
-
-    <section class="ftco-section" style="margin-top: 0%;padding-top: 4%;">
-    	<div class="container">
-        <div class="row">
-        	<div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Monday </a></p>
-
-        		</div>
-        	</div>
-        	<div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Tuesday </a></p>
-
-        		</div>
-        	</div>
-            <div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Wednesday </a></p>
-
-        		</div>
-        	</div>
-            <div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Thursday </a></p>
-
-        		</div>
-        	</div>
-            <div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Friday </a></p>
-
-        		</div>
-        	</div>
-            <div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Saturday </a></p>
-
-        		</div>
-        	</div>
-            <div class="days">
-        		<div class="classes w-100 ftco-animate">
-                    <p style="display: inline;"><a href="exercise/squats" class="btn btn-outline-primary px-4 py-3" > Sunday </a></p>
-
-        		</div>
-        	</div>
-        	
-        </div>
-    	</div>
-    </section>
-
-    <footer class="ftco-footer ftco-section bg-light">
-      <div class="container">
-        <div class="row d-flex">
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Meditative</h2>
-              <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
-              <ul class="ftco-footer-social list-unstyled float-lft mt-3">
-                <li class="ftco-animate"><a href="#"><span class="icon-twitter"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-facebook"></span></a></li>
-                <li class="ftco-animate"><a href="#"><span class="icon-instagram"></span></a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4 ml-md-4">
-              <h2 class="ftco-heading-2">Popular Links</h2>
-              <ul class="list-unstyled">
-                <li><a href="#">Yoga for Beginners</a></li>
-                <li><a href="#">Yoga for Pregnant</a></li>
-                <li><a href="#">Yoga Barre</a></li>
-                <li><a href="#">Yoga Advance</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Quick Links</h2>
-              <ul class="list-unstyled">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Classes</a></li>
-                <li><a href="#">Schedule</a></li>
-                <li><a href="#">Contact</a></li>
-              </ul>
-            </div>
-          </div>
-          <div class="col-md">
-            <div class="ftco-footer-widget mb-4">
-              <h2 class="ftco-heading-2">Have a Questions?</h2>
-              <div class="block-23 mb-3">
-                <ul>
-                  <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-                  <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-                  <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12 text-center">
-
-            <p class="mb-0">
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              Copyright &copy;<script>
-                document.write(new Date().getFullYear());
-
-              </script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-            </p>
-          </div>
-        </div>
+      <div class="nutrition">
+        <div class="step"><span>2</span> Get a Nutritional Breakdown</div>
+        <div id="concepts"></div>
       </div>
-    </footer>
-    
-    
-  
+    </div>
 
-  <!-- loader -->
-  <div id="ftco-loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#F96D00"/></svg></div>
-
-
-  <script src="js/jquery.min.js"></script>
-  <script src="js/jquery-migrate-3.0.1.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/bootstrap.min.js"></script>
-  <script src="js/jquery.easing.1.3.js"></script>
-  <script src="js/jquery.waypoints.min.js"></script>
-  <script src="js/jquery.stellar.min.js"></script>
-  <script src="js/owl.carousel.min.js"></script>
-  <script src="js/jquery.magnific-popup.min.js"></script>
-  <script src="js/aos.js"></script>
-  <script src="js/jquery.animateNumber.min.js"></script>
-  <script src="js/bootstrap-datepicker.js"></script>
-  <script src="js/jquery.timepicker.min.js"></script>
-  <script src="js/scrollax.min.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
-  <script src="js/google-map.js"></script>
-  <script src="js/main.js"></script>
+    <div class="powered-by">
+      <p>Inspired by <a href="https://devpost.com/software/munch-emsv0u">Munch</a>.  Powered by .</p>
+    </div>
+  </div>
+  <!-- <script>
     
-  </body>
+    function predict_click(value, source) {
+      var preview = $(".food-photo");
+      var file    = document.querySelector("input[type=file]").files[0];
+      var loader  = "https://s3.amazonaws.com/static.mlh.io/icons/loading.svg";
+      var reader  = new FileReader();
+    
+      // load local file picture
+      reader.addEventListener("load", function () {
+        preview.attr('style', 'background-image: url("' + reader.result + '");');
+        doPredict({ base64: reader.result.split("base64,")[1] });
+      }, false);
+    
+      if (file) {
+        reader.readAsDataURL(file);
+        $('#concepts').html('<img src="' + loader + '" class="loading" />');
+      } else { alert("No file selcted!"); }
+    }
+    function doPredict(value) {
+      app.models.predict(Clarifai.FOOD_MODEL, value).then(function(response) {
+          if(response.rawData.outputs[0].data.hasOwnProperty("concepts")) {
+            var tag = response.rawData.outputs[0].data.concepts[0].name;
+            var url = 'http://api.wolframalpha.com/v2/query?input='+tag+'%20nutrition%20facts&appid='+myWolframAppId;
+    
+            getNutritionalInfo(url, function (result) {
+              $('#concepts').html('<h3>'+ tag + '</h3>' + "<img src='"+result+"'>");
+            });
+          }
+        }, function(err) { console.log(err); }
+      );
+    }
+  </script> -->
+</body>
 </html>
