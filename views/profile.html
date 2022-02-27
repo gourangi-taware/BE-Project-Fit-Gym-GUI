@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>FIT-GYM</title>
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+	<body bgcolor="#ccbfbe">
+   
+
+   <div class="container demo">
+   <div class="content">
+      <div id="large-header" class="large-header">
+         <canvas id="demo-canvas"></canvas>
+         <h1 class="main-title"><span class="thin">User</span> Profile</h1>
+      </div>
+    </div>
+   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <form id="newform">
+  	<label for="fname">Name :</label>
+	  <input type="text" id="fname" name="Name" size="50"><br><br>
+
+		<label for="fname">Age :</label>
+	  <input type="text" id="fname" name="Age" size="50"><br><br>
+
+
+		<label for="fname">Weight :</label>
+	  <input type="text" id="fname" name="Weight" size="50"><br><br>
+
+
+		<label for="fname">Height   :</label>
+	  <input type="text" id="fname" name="Height" size="50"><br><br>
+
+		<label for="fname">BMI Scale:</label>
+	  <input type="text" id="fname" name="BMI" size="50"><br><br>
+  </form>
+
+  
+	<section class="buttons" id="newform">
+	  
+
+	  <button class="draw meet">WORKOUT NO:</button>
+
+	  <button class="draw meet">CALORIES NO</button>
+	  
+	  <button class="draw meet">MINUTES </button>
+
+	</section>
+
+  	<canvas id="myChart" style="width:100%;max-width:800px"></canvas>
+
+    
+    <canvas id="myChar" style="width:100%;max-width:800px"></canvas>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+		<script>
+		var xValues = [50,60,70,80,90,100,110,120,130,140,150];
+		var yValues = [7,8,8,9,9,9,10,11,14,14,15];
+
+		new Chart("myChart", {
+		  type: "line",
+		  data: {
+		    labels: xValues,
+		    datasets: [{
+		      fill: false,
+		      lineTension: 0,
+		      backgroundColor: "rgba(0,0,255,1.0)",
+		      borderColor: "rgba(0,0,255,0.1)",
+		      data: yValues
+		    }]
+		  },
+		  options: {
+		    legend: {display: false},
+		    scales: {
+		      yAxes: [{ticks: {min: 6, max:16}}],
+		    }
+
+		  }
+		});
+		</script>
+
+
+
+<script>
+var xValues = ["Italy", "France", "Spain", "USA", "Argentina"];
+var yValues = [55, 49, 44, 24, 15];
+var barColors = ["red", "green","blue","orange","brown"];
+
+new Chart("myChar", {
+  type: "bar",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Date"
+    }
+  }
+});
+
+</script>
+<script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/TweenLite.min.js"></script>
+<script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/EasePack.min.js"></script>
+<script type="text/javascript" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/499416/demo.js"></script>
+
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>

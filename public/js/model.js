@@ -66,6 +66,8 @@ function onResults(results) {
 
     canvasCtx.restore();
 
+    // grid.updateLandmarks(results.poseWorldLandmarks);
+
     // grid.updateLandmarks(results.poseLandmarks);
 }
 
