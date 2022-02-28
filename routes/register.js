@@ -102,6 +102,7 @@ router.post('/diet',async function(req, res, next) {
   console.log(resi);
   var nutrients=await axios.get('https://api.edamam.com/api/food-database/v2/parser?app_id=729b8943&app_key=6e8a020bc1554d5e11784353ec417be6&ingr='+resi.tag+'&nutrition-type=cooking')
   .then(response => {
+    console.log(response.data);
     console.log(response.data.parsed[0].food);
     return response.data.parsed[0].food;
     
