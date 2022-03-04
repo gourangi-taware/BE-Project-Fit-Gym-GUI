@@ -9,6 +9,7 @@ canvasElement.width  = canvasElement.offsetWidth;
 canvasElement.height = canvasElement.offsetHeight;
 
 const canvasCtx = canvasElement.getContext('2d');
+const repMeterHeight = 100;
 
 let bicepAngle = 180;
 let count = 0;
@@ -41,15 +42,59 @@ function onResults(results) {
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 4});
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
 
-    // console.log(results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility);
+    bicepCheck(results.poseLandmarks);
+    // lungesCheck(results.poseLandmarks);
 
-    if (results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].visibility > 0.75 && results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility > 0.75 && results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].visibility > 0.75){
-        console.log("TRUE");
-        bicepAngle = getBicepAngle(results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+    canvasCtx.rect(25, 25, 100, 100);
+    canvasCtx.stroke();
+
+    canvasCtx.restore();
+
+    // grid.updateLandmarks(results.poseWorldLandmarks);
+
+    // grid.updateLandmarks(results.poseLandmarks);
+}
+
+function squatCheck(poseLandmarks){
+    if (poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].visibility > 0.75){
+        leftKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_HIP], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE]));
+        rightKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]));
+
         canvasCtx.fillStyle = "#00FF00";
-        canvasCtx.fillRect(25, 25, 100, toRepMeter(bicepAngle, toRepMeter(bicepAngle, 100)));
-        canvasCtx.rect(25, 25, 100, 100);
-        canvasCtx.stroke();
+        console.log("RIGHT KNEE: ", rightKneeAngle);
+        console.log("LEFT KNEE: ", leftKneeAngle);
+        canvasCtx.fillRect(25, 25, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
+
+        // canvasCtx.fillStyle = "#00FF00";
+        // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
+    }
+}
+
+function lungesCheck(poseLandmarks){
+    if (poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].visibility > 0.75){
+        rightKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]));
+
+        canvasCtx.fillStyle = "#00FF00";
+        canvasCtx.fillRect(25, 25, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
+
+        // canvasCtx.fillStyle = "#00FF00";
+        // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
+        
+    }
+}
+
+function bicepCheck(poseLandmarks){
+    shoulder = poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER];
+    elbow = poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW];
+    wrist = poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST];
+    
+    if (poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].visibility > 0.75){
+        console.log("TRUE");
+        bicepAngle = rad_to_deg(find_angle_rad(shoulder, elbow, wrist));
+        // bicepAngle = getBicepAngle(poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+
+        canvasCtx.fillStyle = "#00FF00";
+        canvasCtx.fillRect(25, 25, 100, toRepMeter(bicepAngle, 100, 45, 150));
         
         if (bicepAngle < 45 && !eccentric){
             // console.log("REP DONE");
@@ -61,32 +106,16 @@ function onResults(results) {
             eccentric = false;
         }
     }
-
-    // console.log(count);
-
-    canvasCtx.restore();
-
-    // grid.updateLandmarks(results.poseWorldLandmarks);
-
-    // grid.updateLandmarks(results.poseLandmarks);
 }
 
-function getBicepAngle(shoulder, elbow, wrist){
-    return rad_to_deg(find_angle_rad(shoulder, elbow, wrist));
-}
-
-function bicepCheck(poseLandmarks){
-    bicepAngle = getBicepAngle(results.poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], results.poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], results.poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
-}
-
-function toRepMeter(angle, height){
-    if (angle < 45){
-        angle = 45;
+function toRepMeter(angle, height, angleMin, angleMax){
+    if (angle < angleMin){
+        angle = angleMin;
     }
-    else if (angle > 150){
-        angle = 150;
+    else if (angle > angleMax){
+        angle = angleMax;
     }
-    return ((angle - 45) / 105) * height;
+    return ((angle - angleMin) / (angleMax - angleMin)) * height;
 }
 
 function find_angle_rad(L,M,R) {
