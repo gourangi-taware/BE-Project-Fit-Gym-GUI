@@ -15,7 +15,7 @@
     hideDistantElements: false,
     scrollProperty: 'scroll',
     horizontalOffset: 0,
-	  verticalOffset: 0
+	verticalOffset: 0
   });
 
   // Scrollax

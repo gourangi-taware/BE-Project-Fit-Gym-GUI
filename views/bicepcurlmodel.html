@@ -40,10 +40,11 @@
 		<div class="jumbotron jumbotron-fluid" id="xx">
 			<div class="container">
 				<div class="stopwatch">
-					<h1>START-STOP </h1>
-					<div class="circle">
+					<h1>Count:  </h1>
+					<h2 id="counter">0</h2>
+					<!-- <div class="circle">
 						<span class="time" id="display">00:00:00</span>
-					</div>
+					</div> -->
 
 					<div class="controls">
 						<button class="buttonPlay">
@@ -110,7 +111,7 @@
 		// Create function to modify innerHTML
 
 		function print(txt) {
-			document.getElementById("display").innerHTML = txt;
+			// document.getElementById("display").innerHTML = txt;
 		}
 
 		// Create "start", "pause" and "reset" functions
