@@ -137,8 +137,5 @@ router.post('/diet',async function(req, res, next) {
   return item;
 }
 
-
-
-
 exports.routes = router;
 exports.users=users;

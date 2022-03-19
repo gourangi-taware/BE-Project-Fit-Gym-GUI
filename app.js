@@ -75,6 +75,9 @@ app.get('/diet', (req, res) => {
     res.sendFile("diet.html", { root: __dirname + "/views" });
 });
 
+app.get('/profile', (req, res) => {
+    res.sendFile("profile.html", { root: __dirname + "/views" });
+});
 
 var port = process.env.PORT || 5000;
 
