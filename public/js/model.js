@@ -50,9 +50,7 @@ function onResults(results) {
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 4});
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
 
-    if (startExercise){
-        bicepCheck(results.poseLandmarks);
-    }
+    pushUpsCheck(results.poseLandmarks);
 
     counterElement.innerHTML = count;
 
@@ -108,13 +106,83 @@ function bicepCheck(poseLandmarks){
         
         if (bicepAngle < 45 && !eccentric){
             console.log("REP DONE");
-            count += 1;
             eccentric = true;
         }
         else if (bicepAngle > 150){
+            count += 1;
             eccentric = false;
         }
     }
+}
+
+function jumpingJacksCheck(poseLandmarks){
+    let visibilityArray = [
+        poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE], poseLandmarks[POSE_LANDMARKS.LEFT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], 
+        poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.LEFT_HIP], 
+        poseLandmarks[POSE_LANDMARKS.LEFT_WRIST], poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.LEFT_HIP],
+        poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP]
+    ];
+
+    let visibility = visibilityArrayCheck(visibilityArray);
+
+    if (visibility){
+        let leftHipAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE], poseLandmarks[POSE_LANDMARKS.LEFT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP]));
+        let rightHipAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.LEFT_HIP]));
+
+        let leftArmpitAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_WRIST], poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.LEFT_HIP]));
+        let rightArmpitAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_HIP]));
+        
+        console.log("Left hip", leftHipAngle);
+        console.log("Right Hip", rightHipAngle);
+        console.log("Left Armpit", leftArmpitAngle);
+        console.log("Right Armpit", rightArmpitAngle);
+        console.log("Eccentric", eccentric);
+        console.log("-----------------------------------------------------------------------------------------------");
+
+        if (eccentric && leftArmpitAngle < 12 && rightArmpitAngle < 12 && leftHipAngle < 90 && rightHipAngle < 90){
+            console.log("REP DONE");
+            count += 1;
+            eccentric = false;
+        }
+        else if (!eccentric && leftArmpitAngle > 150 && rightArmpitAngle > 150 && leftHipAngle > 100 && rightHipAngle > 100){
+            eccentric = true;
+        }
+    }
+}
+
+function pushUpsCheck(poseLandmarks){
+    let direction = "RIGHT";
+
+    let visibilityArray = [
+        poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ELBOW`]], poseLandmarks[POSE_LANDMARKS[`${direction}_WRIST`]],
+        poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_HIP`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ANKLE`]]
+    ];
+
+    let visibility = visibilityArrayCheck(visibilityArray);
+    
+    if (visibility){
+        let elbowAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ELBOW`]], poseLandmarks[POSE_LANDMARKS[`${direction}_WRIST`]]));
+        let torsoAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_HIP`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ANKLE`]]));
+
+        console.log("Elbow Angle:", elbowAngle);
+        console.log("Torso Angle:", torsoAngle);
+        console.log("-------------------------------------------------------------------------------------------");
+    }
+}
+
+function wallPushUps(poseLandmarks){
+    pushUpsCheck(poseLandmarks);
+}
+
+function visibilityArrayCheck(visibilityArray){
+    let visibility = true;
+    for(let i = 0; i < visibilityArray.length; i++){
+        if (visibilityArray[i].visibility < 0.75){
+            visibility = false;
+            break;
+        }   
+    }
+    return visibility;
 }
 
 function toRepMeter(angle, height, angleMin, angleMax){
