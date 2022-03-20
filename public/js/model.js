@@ -164,9 +164,17 @@ function pushUpsCheck(poseLandmarks){
         let elbowAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ELBOW`]], poseLandmarks[POSE_LANDMARKS[`${direction}_WRIST`]]));
         let torsoAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_HIP`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ANKLE`]]));
 
-        console.log("Elbow Angle:", elbowAngle);
-        console.log("Torso Angle:", torsoAngle);
-        console.log("-------------------------------------------------------------------------------------------");
+        // console.log("Elbow Angle:", elbowAngle); // Start - 165 End - (70 - 85)
+        // console.log("Torso Angle:", torsoAngle); // Start - 165 - 175 // Avg - 170
+        // console.log("-------------------------------------------------------------------------------------------");
+
+        if (eccentric && elbowAngle < 85 && torsoAngle < 175 && torsoAngle > 165){
+            eccentric = false;
+        }
+        else if (!eccentric && elbowAngle > 165 && torsoAngle < 175 && torsoAngle > 165){
+            count += 1;
+            eccentric = true;
+        }
     }
 }
 
