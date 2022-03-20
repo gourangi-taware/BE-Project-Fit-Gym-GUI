@@ -163,6 +163,45 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
   <script src="js/main.js"></script>
+
+  <script>
+	function calculate_bmi(h, w) {
+		let bmi;
+		bmi= (w*100*100)/(h*h);
+		return bmi;
+	}
+	function category_bmi(bmi){
+		if(bmi <16)
+		{
+			return "Severe Thinness";
+		}
+		else if(16 <= bmi <17){
+			return "Moderate Thinness";
+		}
+		else if(17 <= bmi <18.5){
+			return "Mild Thinness";
+		}
+		else if(18.5 <= bmi <25){
+			return "Normal";
+		}
+		else if(25 <= bmi <30){
+			return "Overweight";
+		}
+		else if(30 <= bmi <35){
+			return "Obese Class I";
+		}
+		else if(35 <= bmi <40){
+			return "Obese Class II";
+		}
+		else if(40 <= bmi){
+			return "Obese Class III";
+		}
+		else{
+			return "Enter Correct Height and Weight";
+		}
+	}
+
+  </script>
    
   </body>
 </html>
