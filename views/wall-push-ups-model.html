@@ -1,167 +1,183 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>FIT-GYM</title>
-	<link rel="stylesheet" type="text/css" href="/css/model.css">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="/css/model.css">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-	<body bgcolor="#ccbfbe">
 
+<body bgcolor="#ccbfbe">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	  <b><a class="navbar-brand" href="#">WALL PUSH UPS</a></b>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
+		<b><a class="navbar-brand" href="#">WALL PUSH UP</a></b>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+			aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      
-	    
-	    </ul>
-	    <form class="form-inline my-2 my-lg-0">
-	 
-		  <input type="button" onclick="location.href='wall-push-ups';" value="TUTORIAL" />
-	    </form>
-	  </div>
-	</nav> 
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav mr-auto">
 
 
+			</ul>
+			<form class="form-inline my-2 my-lg-0">
+				<a href="/exercise/bicepcurl">
+					<input type="button" value="TUTORIAL" />
+				</a>
+			</form>
+		</div>
+	</nav>
 
+	<section id="divison">
+		<div id="container">
+			<video autoplay="true" id="videoModel" hidden></video>
+			<canvas id="canvasModel"></canvas>
+		</div>
 
-<section id="divison">
-    <div id="container">
-			<video autoplay="true" id="videoElement">
-			
-			</video>
-    </div>
+		<div class="jumbotron jumbotron-fluid" id="xx">
+			<div class="container">
+				<div class="stopwatch">
+					<h1>Count:  </h1>
+					<h2 id="counter">0</h2>
+					<!-- <div class="circle">
+						<span class="time" id="display">00:00:00</span>
+					</div> -->
 
-	<div class="jumbotron jumbotron-fluid" id="xx">         
-	   <div class="container">
-	   <div class="stopwatch">
-		      <h1>START-STOP </h1>
-		      <div class="circle">
-		        <span class="time" id="display">00:00:00</span>
-		      </div>
+					<div class="controls">
+						<button class="buttonPlay">
+							<img id="playButton" src="/images/play.png" />
 
-		      <div class="controls">
-				<button class="buttonPlay">
-				  <img id="playButton" src="/images/play.png" />
+							<img id="pauseButton" src="/images/pause.png" />
+						</button>
 
-				  <img id="pauseButton" src="/images/pause.png" />
-				</button>
+						<button class="buttonReset">
+							<img id="resetButton" src="/images/reset.png" />
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
 
-				<button class="buttonReset">
-				  <img id="resetButton" src="/images/reset.png" />
-				</button>
-		   </div>
-	    </div>
-	 </div>  
+	<div class="jumbotron jumbotron-fluid">
+		<div class="container">
+			<h1 class="display-9">TOTAL TIME : </h1>
+			<h1 class="display-9">CALORIE COUNT : </h1>
+		</div>
 	</div>
-</section>
 
+	<script type="text/javascript">
+		var video = document.querySelector("#videoModel");
+		if (navigator.mediaDevices.getUserMedia) {
+			navigator.mediaDevices.getUserMedia({ video: true })
+				.then(function (stream) {
+					video.srcObject = stream;
+				})
+				.catch(function (err0r) {
+					console.log("Something went wrong!");
+				});
+		}
+	</script>
+	<script type="text/javascript">
+		function timeToString(time) {
+			let diffInHrs = time / 3600000;
+			let hh = Math.floor(diffInHrs);
 
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-9">TOTAL TIME : </h1>
-    <h1 class="display-9">CALORIE COUNT : </h1>
-  </div>
-</div>
+			let diffInMin = (diffInHrs - hh) * 60;
+			let mm = Math.floor(diffInMin);
 
+			let diffInSec = (diffInMin - mm) * 60;
+			let ss = Math.floor(diffInSec);
 
+			let diffInMs = (diffInSec - ss) * 100;
+			let ms = Math.floor(diffInMs);
 
+			let formattedMM = mm.toString().padStart(2, "0");
+			let formattedSS = ss.toString().padStart(2, "0");
+			let formattedMS = ms.toString().padStart(2, "0");
 
+			return `${formattedMM}:${formattedSS}:${formattedMS}`;
+		}
 
-        <script type="text/javascript">        	
-			var video = document.querySelector("#videoElement");
-			if (navigator.mediaDevices.getUserMedia) {
-			  navigator.mediaDevices.getUserMedia({ video: true })
-			    .then(function (stream) {
-			      video.srcObject = stream;
-			    })
-			    .catch(function (err0r) {
-			      console.log("Something went wrong!");
-			    });
-			}
-        </script>
-        <script type="text/javascript">             
-				function timeToString(time) {
-				  let diffInHrs = time / 3600000;
-				  let hh = Math.floor(diffInHrs);
+		// Declare variables to use in our functions below
 
-				  let diffInMin = (diffInHrs - hh) * 60;
-				  let mm = Math.floor(diffInMin);
+		let startTime;
+		let elapsedTime = 0;
+		let timerInterval;
 
-				  let diffInSec = (diffInMin - mm) * 60;
-				  let ss = Math.floor(diffInSec);
+		// Create function to modify innerHTML
 
-				  let diffInMs = (diffInSec - ss) * 100;
-				  let ms = Math.floor(diffInMs);
+		function print(txt) {
+			// document.getElementById("display").innerHTML = txt;
+		}
 
-				  let formattedMM = mm.toString().padStart(2, "0");
-				  let formattedSS = ss.toString().padStart(2, "0");
-				  let formattedMS = ms.toString().padStart(2, "0");
+		// Create "start", "pause" and "reset" functions
 
-				  return `${formattedMM}:${formattedSS}:${formattedMS}`;
-				}
+		function start() {
+			startTime = Date.now() - elapsedTime;
+			timerInterval = setInterval(function printTime() {
+				elapsedTime = Date.now() - startTime;
+				print(timeToString(elapsedTime));
+			}, 10);
+			showButton("PAUSE");
+		}
 
-				// Declare variables to use in our functions below
+		function pause() {
+			clearInterval(timerInterval);
+			showButton("PLAY");
+		}
 
-				let startTime;
-				let elapsedTime = 0;
-				let timerInterval;
+		function reset() {
+			clearInterval(timerInterval);
+			print("00:00:00");
+			elapsedTime = 0;
+			showButton("PLAY");
+		}
 
-				// Create function to modify innerHTML
+		// Create function to display buttons
 
-				function print(txt) {
-				  document.getElementById("display").innerHTML = txt;
-				}
+		function showButton(buttonKey) {
+			const buttonToShow = buttonKey === "PLAY" ? playButton : pauseButton;
+			const buttonToHide = buttonKey === "PLAY" ? pauseButton : playButton;
+			buttonToShow.style.display = "block";
+			buttonToHide.style.display = "none";
+		}
+		// Create event listeners
 
-				// Create "start", "pause" and "reset" functions
+		let playButton = document.getElementById("playButton");
+		let pauseButton = document.getElementById("pauseButton");
+		let resetButton = document.getElementById("resetButton");
 
-				function start() {
-				  startTime = Date.now() - elapsedTime;
-				  timerInterval = setInterval(function printTime() {
-				    elapsedTime = Date.now() - startTime;
-				    print(timeToString(elapsedTime));
-				  }, 10);
-				  showButton("PAUSE");
-				}
+		playButton.addEventListener("click", start);
+		pauseButton.addEventListener("click", pause);
+		resetButton.addEventListener("click", reset);
 
-				function pause() {
-				  clearInterval(timerInterval);
-				  showButton("PLAY");
-				}
+	</script>
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
 
-				function reset() {
-				  clearInterval(timerInterval);
-				  print("00:00:00");
-				  elapsedTime = 0;
-				  showButton("PLAY");
-				}
-
-				// Create function to display buttons
-
-				function showButton(buttonKey) {
-				  const buttonToShow = buttonKey === "PLAY" ? playButton : pauseButton;
-				  const buttonToHide = buttonKey === "PLAY" ? pauseButton : playButton;
-				  buttonToShow.style.display = "block";
-				  buttonToHide.style.display = "none";
-				}
-				// Create event listeners
-
-				let playButton = document.getElementById("playButton");
-				let pauseButton = document.getElementById("pauseButton");
-				let resetButton = document.getElementById("resetButton");
-
-				playButton.addEventListener("click", start);
-				pauseButton.addEventListener("click", pause);
-				resetButton.addEventListener("click", reset);
-
-        </script>
-		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<!-- Model Scripts -->
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils/control_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils_3d/control_utils_3d.js"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@mediapipe/pose/pose.js" crossorigin="anonymous"></script>
+	<script src="../js/model.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
 </body>
+
 </html>
