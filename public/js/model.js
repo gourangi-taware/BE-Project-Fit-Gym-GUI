@@ -1,11 +1,38 @@
-console.log("BicepCurl model connected.");
+console.log("Model connected.");
 const videoElement = document.getElementById('videoModel');
 const canvasElement = document.getElementById('canvasModel');
 const counterElement = document.getElementById('counter');
 const startElement = document.getElementsByClassName('buttonPlay')[0];
 
+var currentexercise;
+
 startElement.onclick = function fun()
 {
+    var location=window.location.href;
+    if(location=="http://localhost:5000/models/bicepcurlmodel")
+    {
+        currentexercise="BicepCurl";
+    }
+    else if(location=="http://localhost:5000/models/squatsmodel")
+    {
+        currentexercise="Squats";
+    }
+    else if(location=="http://localhost:5000/models/pushupsmodel")
+    {
+        currentexercise="PushUp";
+    }
+    else if(location=="http://localhost:5000/models/lungesmodel")
+    {
+        currentexercise="Lunges";
+    }
+    else if(location=="http://localhost:5000/models/jumpingjacksmodel")
+    {
+        currentexercise="JumpingJacks";
+    }
+    else if(location=="http://localhost:5000/models/wall-push-ups-model")
+    {
+        currentexercise="WallPushUps";
+    }
     startExercise = !startExercise;
     console.log("Toggled to ", startExercise);
 } 
@@ -50,12 +77,42 @@ function onResults(results) {
     drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {color: '#00FF00', lineWidth: 4});
     drawLandmarks(canvasCtx, results.poseLandmarks, {color: '#FF0000', lineWidth: 2});
 
-    pushUpsCheck(results.poseLandmarks);
+    if (startExercise){
+        canvasCtx.rect(25, 25, 100, 100);
+        canvasCtx.stroke();
+
+        if(currentexercise=="BicepCurl")
+        {   
+            bicepCheck(results.poseLandmarks);
+        }
+        else if(currentexercise=="Squats")
+        {   
+            squatCheck(results.poseLandmarks);
+        }
+        else if(currentexercise=="PushUp")
+        {
+            pushUpsCheck(results.poseLandmarks);
+        }
+        else if(currentexercise=="Lunges")
+        {
+            lungesCheck(results.poseLandmarks);
+        }
+        else if(currentexercise=="JumpingJacks")
+        {
+            jumpingJacksCheck(results.poseLandmarks);
+        }
+        else if(currentexercise=="WallPushUps")
+        {
+            wallPushUpsCheck(results.poseLandmarks);
+        }
+    }
+
+
+
+
+    // pushUpsCheck(results.poseLandmarks);
 
     counterElement.innerHTML = count;
-
-    canvasCtx.rect(25, 25, 100, 100);
-    canvasCtx.stroke();
 
     canvasCtx.restore();
 
@@ -68,6 +125,18 @@ function squatCheck(poseLandmarks){
     if (poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].visibility > 0.75){
         leftKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_HIP], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE]));
         rightKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]));
+
+        if (!eccentric && rightKneeAngle > 175){
+            count += 1;
+            eccentric = true;
+        }
+        else if (eccentric && rightKneeAngle < 90){
+            eccentric = false;
+        }
+
+        let legDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
+        let shoulderDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+        console.log(legDist - shoulderDist);
 
         canvasCtx.fillStyle = "#00FF00";
         console.log("RIGHT KNEE: ", rightKneeAngle);
@@ -89,6 +158,13 @@ function lungesCheck(poseLandmarks){
         // canvasCtx.fillStyle = "#00FF00";
         // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
         
+        if (!eccentric && rightKneeAngle > 100){
+            count += 1;
+            eccentric = true;
+        }
+        else if (eccentric && rightKneeAngle < 90){
+            eccentric = false;
+        }
     }
 }
 
@@ -108,7 +184,7 @@ function bicepCheck(poseLandmarks){
             console.log("REP DONE");
             eccentric = true;
         }
-        else if (bicepAngle > 150){
+        else if (eccentric && bicepAngle > 150){
             count += 1;
             eccentric = false;
         }
@@ -178,7 +254,7 @@ function pushUpsCheck(poseLandmarks){
     }
 }
 
-function wallPushUps(poseLandmarks){
+function wallPushUpsCheck(poseLandmarks){
     pushUpsCheck(poseLandmarks);
 }
 
@@ -208,6 +284,10 @@ function find_angle_rad(L,M,R) {
     var BC = Math.sqrt(Math.pow(M.x-R.x,2)+ Math.pow(M.y-R.y,2)); 
     var AC = Math.sqrt(Math.pow(R.x-L.x,2)+ Math.pow(R.y-L.y,2));
     return Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
+}
+
+function distPoints(P1, P2){
+    return Math.sqrt(Math.pow(P1.x - P2.x, 2) + Math.pow(P1.y - P2.y, 2));
 }
 
 function rad_to_deg(A)
