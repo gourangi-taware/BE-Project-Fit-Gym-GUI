@@ -155,8 +155,12 @@ function lungesCheck(poseLandmarks){
 
         // canvasCtx.fillStyle = "#00FF00";
         // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
+        let thighDist = distPoints(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
+        let lowerDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
         
         if (!eccentric && rightKneeAngle > 100){
+            console.log(Math.abs(thighDist - lowerDist));
+            console.log("One rep");
             count += 1;
             eccentric = true;
         }
