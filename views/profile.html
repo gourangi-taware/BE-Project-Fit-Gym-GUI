@@ -165,6 +165,13 @@
   <script src="js/main.js"></script>
 
   <script>
+
+  function ideal_weight(h){
+    if(gender=='male')
+    return "ideal weight (in kg) is" + (22*h*h/10000);
+    else
+    return "ideal weight (in kg) is" + (22*(h-10)*(h-10)/10000);
+  }
 	function calculate_bmi(h, w) {
 		let bmi;
 		bmi= (w*100*100)/(h*h);
