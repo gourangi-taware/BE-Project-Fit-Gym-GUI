@@ -35,6 +35,7 @@ startElement.onclick = function fun()
     }
     startExercise = !startExercise;
     console.log("Toggled to ", startExercise);
+    console.log("Current Exercise", currentexercise);
 } 
 
 canvasElement.style.width='100%';
@@ -106,9 +107,6 @@ function onResults(results) {
             wallPushUpsCheck(results.poseLandmarks);
         }
     }
-
-
-
 
     // pushUpsCheck(results.poseLandmarks);
 
