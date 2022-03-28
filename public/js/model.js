@@ -8,34 +8,34 @@ const startElement = document.getElementsByClassName('buttonPlay')[0];
 
 var currentexercise;
 
+var location=window.location.href;
+if(location=="http://localhost:5000/models/bicepcurlmodel")
+{
+    currentexercise="BicepCurl";
+}
+else if(location=="http://localhost:5000/models/squatsmodel")
+{
+    currentexercise="Squats";
+}
+else if(location=="http://localhost:5000/models/pushupsmodel")
+{
+    currentexercise="PushUp";
+}
+else if(location=="http://localhost:5000/models/lungesmodel")
+{
+    currentexercise="Lunges";
+}
+else if(location=="http://localhost:5000/models/jumpingjacksmodel")
+{
+    currentexercise="JumpingJacks";
+}
+else if(location=="http://localhost:5000/models/wall-push-ups-model")
+{
+    currentexercise="WallPushUps";
+}
 
 startElement.onclick = function fun()
 {
-    var location=window.location.href;
-    if(location=="http://localhost:5000/models/bicepcurlmodel")
-    {
-        currentexercise="BicepCurl";
-    }
-    else if(location=="http://localhost:5000/models/squatsmodel")
-    {
-        currentexercise="Squats";
-    }
-    else if(location=="http://localhost:5000/models/pushupsmodel")
-    {
-        currentexercise="PushUp";
-    }
-    else if(location=="http://localhost:5000/models/lungesmodel")
-    {
-        currentexercise="Lunges";
-    }
-    else if(location=="http://localhost:5000/models/jumpingjacksmodel")
-    {
-        currentexercise="JumpingJacks";
-    }
-    else if(location=="http://localhost:5000/models/wall-push-ups-model")
-    {
-        currentexercise="WallPushUps";
-    }
     startExercise = !startExercise;
     console.log("Toggled to ", startExercise);
     console.log("Current Exercise", currentexercise);
@@ -144,7 +144,9 @@ function squatCheck(poseLandmarks){
 
         let leftKneeToToeDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE]);
         let rightKneeToToeDist = distPoints(poseLandmarks[POSE_LANDMARKS.RIGHT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
-
+        
+        console.log("Leg Distance:", legDist);
+        
         console.log("Left Knee To Toe:", leftKneeToToeDist);
         console.log("Right Knee To Toe:", rightKneeToToeDist);
         console.log("-------------------------------------------------------------------------------------------------------------------");
@@ -202,10 +204,6 @@ function lungesCheck(poseLandmarks){
 }
 
 function bicepCheck(poseLandmarks){
-    // shoulder = poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER];
-    // elbow = poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW];
-    // wrist = poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST];
-
     let rightHandCheckVisibilityArray = [
         poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST],
         poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW],
@@ -220,14 +218,34 @@ function bicepCheck(poseLandmarks){
 
     if (visibilityArrayCheck(leftHandCheckVisibilityArray) && visibilityArrayCheck(rightHandCheckVisibilityArray)){
         let leftBicepAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.LEFT_ELBOW], poseLandmarks[POSE_LANDMARKS.LEFT_WRIST]));
+        let rightBicepAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST]));
+
+        let leftBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.LEFT_WRIST].x);
+        let rightBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].x);
+
+        console.log(leftBicepXDiff);
+        console.log(rightBicepXDiff);
+        console.log("----------------------------");
+
+        // 
 
         if (leftBicepAngle < 45 && !leftEccentric){
-            console.log("REP DONE");
+            // console.log("REP DONE");
             leftEccentric = true;
         }
-        else if (leftEccentric && leftBicepAngle > 150){
+        else if (leftEccentric && leftBicepAngle > 150 && leftBicepXDiff > 0 && leftBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
+            // console.log("Left:", leftBicepXDiff);
+            // console.log("Right:", rightBicepXDiff);
             leftBicepCount += 1;
             leftEccentric = false;
+        }
+
+        if (rightBicepAngle < 45 && !rightEccentric){
+            rightEccentric = true;
+        }
+        else if (rightEccentric && rightBicepAngle > 150 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
+            rightBicepCount += 1;
+            rightEccentric = false;
         }
     }
 
@@ -338,14 +356,14 @@ function toRepMeter(angle, height, angleMin, angleMax){
 }
 
 function find_angle_rad(L,M,R) {
-    var AB = Math.sqrt(Math.pow(M.x-L.x,2)+ Math.pow(M.y-L.y,2));    
-    var BC = Math.sqrt(Math.pow(M.x-R.x,2)+ Math.pow(M.y-R.y,2)); 
-    var AC = Math.sqrt(Math.pow(R.x-L.x,2)+ Math.pow(R.y-L.y,2));
-    return Math.acos((BC*BC+AB*AB-AC*AC)/(2*BC*AB));
+    var AB = Math.sqrt(Math.pow(M.x - L.x, 2) + Math.pow(M.y - L.y, 2) + Math.pow(M.z - L.z, 2));    
+    var BC = Math.sqrt(Math.pow(M.x - R.x, 2) + Math.pow(M.y - R.y, 2) + Math.pow(M.z - R.z, 2)); 
+    var AC = Math.sqrt(Math.pow(R.x - L.x, 2) + Math.pow(R.y - L.y, 2) + Math.pow(R.z - L.z, 2));
+    return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
 }
 
 function distPoints(P1, P2){
-    return Math.sqrt(Math.pow(P1.x - P2.x, 2) + Math.pow(P1.y - P2.y, 2));
+    return Math.sqrt(Math.pow(P1.x - P2.x, 2) + Math.pow(P1.y - P2.y, 2) + Math.pow(P1.z - P2.z, 2));
 }
 
 function rad_to_deg(A)
