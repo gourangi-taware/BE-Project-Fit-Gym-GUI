@@ -60,7 +60,7 @@ let leftEccentric = false;
 let rightEccentric = false;
 
 console.log(currentexercise);
-console.log(rad_to_deg(find_angle_rad({x:0, y:0, z:0}, {x:1, y:0, z:0}, {x:1.5, y:(Math.pow(3, 0.5) / 2), z:0})));
+// console.log(rad_to_deg(find_angle_rad({x:0, y:0, z:0}, {x:1, y:0, z:0}, {x:1.5, y:(Math.pow(3, 0.5) / 2), z:0})));
 
 function onResults(results) {
     canvasCtx.save();
@@ -136,6 +136,10 @@ function onResults(results) {
     grid.updateLandmarks(results.poseWorldLandmarks, POSE_CONNECTIONS);
 
     // grid.updateLandmarks(results.poseLandmarks);
+}
+
+function toRange(amin, amax, rmin, rmax, v){
+    return (((v - amin) / (amax - amin)) * rmax) + rmin;
 }
 
 function squatCheck(poseLandmarks){
@@ -365,6 +369,10 @@ function toRepMeter(angle, height, angleMin, angleMax){
 }
 
 function find_angle_rad(L,M,R) {
+    L.x = toRange(-1, 1, 0, 100, L.x);
+    L.y = toRange(-1, 1, 0, 100, L.y);
+    L.z = toRange(-1, 1, 0, 100, L.z);
+
     let AB = {x: L.x - M.x, y: L.y - M.y, z: L.z - M.z};
     let BC = {x: R.x - M.x, y: R.y - M.y, z: R.z - M.z};
 
