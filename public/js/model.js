@@ -8,34 +8,35 @@ const startElement = document.getElementsByClassName('buttonPlay')[0];
 
 var currentexercise;
 
-var location=window.location.href;
-if(location=="http://localhost:5000/models/bicepcurlmodel")
-{
-    currentexercise="BicepCurl";
-}
-else if(location=="http://localhost:5000/models/squatsmodel")
-{
-    currentexercise="Squats";
-}
-else if(location=="http://localhost:5000/models/pushupsmodel")
-{
-    currentexercise="PushUp";
-}
-else if(location=="http://localhost:5000/models/lungesmodel")
-{
-    currentexercise="Lunges";
-}
-else if(location=="http://localhost:5000/models/jumpingjacksmodel")
-{
-    currentexercise="JumpingJacks";
-}
-else if(location=="http://localhost:5000/models/wall-push-ups-model")
-{
-    currentexercise="WallPushUps";
-}
+
 
 startElement.onclick = function fun()
-{
+{   
+    var location=window.location.href;
+    if(location=="http://localhost:5000/models/bicepcurlmodel")
+    {
+        currentexercise="BicepCurl";
+    }
+    else if(location=="http://localhost:5000/models/squatsmodel")
+    {
+        currentexercise="Squats";
+    }
+    else if(location=="http://localhost:5000/models/pushupsmodel")
+    {
+        currentexercise="PushUp";
+    }
+    else if(location=="http://localhost:5000/models/lungesmodel")
+    {
+        currentexercise="Lunges";
+    }
+    else if(location=="http://localhost:5000/models/jumpingjacksmodel")
+    {
+        currentexercise="JumpingJacks";
+    }
+    else if(location=="http://localhost:5000/models/wall-push-ups-model")
+    {
+        currentexercise="WallPushUps";
+    }
     startExercise = !startExercise;
     console.log("Toggled to ", startExercise);
     console.log("Current Exercise", currentexercise);
@@ -59,13 +60,14 @@ let leftEccentric = false;
 let rightEccentric = false;
 
 console.log(currentexercise);
+console.log(rad_to_deg(find_angle_rad({x:0, y:0, z:0}, {x:1, y:0, z:0}, {x:1.5, y:(Math.pow(3, 0.5) / 2), z:0})));
 
 function onResults(results) {
     canvasCtx.save();
     canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
 
     if (!results.poseLandmarks) {
-        // grid.updateLandmarks([]);
+        grid.updateLandmarks([]);
         canvasCtx.globalCompositeOperation = 'destination-atop';
         canvasCtx.drawImage(results.image, 0, 0, canvasElement.width, canvasElement.height);
         return;
@@ -124,12 +126,14 @@ function onResults(results) {
             rightCounterElement.innerHTML = Math.max(0, rightBicepCount);
         }
     }
-
+    // console.log(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST].z);
+    // console.log(distPointsXYZ(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER]));
+    console.log(rad_to_deg(find_angle_rad(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_ELBOW], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST])));
     // pushUpsCheck(results.poseLandmarks);
 
     canvasCtx.restore();
 
-    // grid.updateLandmarks(results.poseWorldLandmarks);
+    grid.updateLandmarks(results.poseWorldLandmarks, POSE_CONNECTIONS);
 
     // grid.updateLandmarks(results.poseLandmarks);
 }
@@ -139,17 +143,17 @@ function squatCheck(poseLandmarks){
         leftKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_HIP], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE]));
         rightKneeAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]));
 
-        let legDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
-        let shoulderDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
+        let legDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.LEFT_ANKLE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
+        let shoulderDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER]);
 
-        let leftKneeToToeDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE]);
-        let rightKneeToToeDist = distPoints(poseLandmarks[POSE_LANDMARKS.RIGHT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
+        let leftKneeToToeDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.LEFT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.LEFT_KNEE]);
+        let rightKneeToToeDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.RIGHT_FOOT_INDEX], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
         
         console.log("Leg Distance:", legDist);
         
         console.log("Left Knee To Toe:", leftKneeToToeDist);
         console.log("Right Knee To Toe:", rightKneeToToeDist);
-        console.log("-------------------------------------------------------------------------------------------------------------------");
+        // console.log("-------------------------------------------------------------------------------------------------------------------");
 
         if ((legDist / shoulderDist) >= 1.4 && (legDist / shoulderDist) <= 1.5){
             console.log("ALL GOOD");
@@ -188,8 +192,8 @@ function lungesCheck(poseLandmarks){
 
         // canvasCtx.fillStyle = "#00FF00";
         // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
-        let thighDist = distPoints(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
-        let lowerDist = distPoints(poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
+        let thighDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP], poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE]);
+        let lowerDist = distPointsXYZ(poseLandmarks[POSE_LANDMARKS.LEFT_KNEE], poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE]);
         
         if (!eccentric && rightKneeAngle > 100){
             console.log(Math.abs(thighDist - lowerDist));
@@ -216,6 +220,9 @@ function bicepCheck(poseLandmarks){
         poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER]
     ];
 
+    // console.log(poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER].z);
+    // console.log(rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.LEFT_ELBOW], poseLandmarks[POSE_LANDMARKS.LEFT_WRIST])));
+    console.log(Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_WRIST].z - poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER].z));
     if (visibilityArrayCheck(leftHandCheckVisibilityArray) && visibilityArrayCheck(rightHandCheckVisibilityArray)){
         let leftBicepAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], poseLandmarks[POSE_LANDMARKS.LEFT_ELBOW], poseLandmarks[POSE_LANDMARKS.LEFT_WRIST]));
         let rightBicepAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER], poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW], poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST]));
@@ -223,12 +230,14 @@ function bicepCheck(poseLandmarks){
         let leftBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.LEFT_WRIST].x);
         let rightBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].x);
 
-        console.log(leftBicepXDiff);
-        console.log(rightBicepXDiff);
-        console.log("----------------------------");
+        // console.log(leftBicepXDiff);
+        // console.log(rightBicepXDiff);
+        // console.log("----------------------------");
 
-        // 
-
+        // console.log("left:", leftBicepAngle);
+        // console.log("right:", rightBicepAngle);
+        // console.log("------------------------------------");
+        
         if (leftBicepAngle < 45 && !leftEccentric){
             // console.log("REP DONE");
             leftEccentric = true;
@@ -315,7 +324,7 @@ function pushUpsCheck(poseLandmarks){
     if (visibility){
         let elbowAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ELBOW`]], poseLandmarks[POSE_LANDMARKS[`${direction}_WRIST`]]));
         let torsoAngle = rad_to_deg(find_angle_rad(poseLandmarks[POSE_LANDMARKS[`${direction}_SHOULDER`]], poseLandmarks[POSE_LANDMARKS[`${direction}_HIP`]], poseLandmarks[POSE_LANDMARKS[`${direction}_ANKLE`]]));
-
+        
         // console.log("Elbow Angle:", elbowAngle); // Start - 165 End - (70 - 85)
         // console.log("Torso Angle:", torsoAngle); // Start - 165 - 175 // Avg - 170
         // console.log("-------------------------------------------------------------------------------------------");
@@ -356,14 +365,28 @@ function toRepMeter(angle, height, angleMin, angleMax){
 }
 
 function find_angle_rad(L,M,R) {
-    var AB = Math.sqrt(Math.pow(M.x - L.x, 2) + Math.pow(M.y - L.y, 2) + Math.pow(M.z - L.z, 2));    
-    var BC = Math.sqrt(Math.pow(M.x - R.x, 2) + Math.pow(M.y - R.y, 2) + Math.pow(M.z - R.z, 2)); 
-    var AC = Math.sqrt(Math.pow(R.x - L.x, 2) + Math.pow(R.y - L.y, 2) + Math.pow(R.z - L.z, 2));
-    return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
+    let AB = {x: L.x - M.x, y: L.y - M.y, z: L.z - M.z};
+    let BC = {x: R.x - M.x, y: R.y - M.y, z: R.z - M.z};
+
+    let magAB = Math.sqrt(Math.pow(M.x - L.x, 2) + Math.pow(M.y - L.y, 2) + Math.pow(M.z - L.z, 2));
+    let magBC = Math.sqrt(Math.pow(R.x - M.x, 2) + Math.pow(R.y - M.y, 2) + Math.pow(R.z - M.z, 2));
+
+    num = (AB.x * BC.x) + (AB.y * BC.y) + (AB.z * BC.z);
+
+    return Math.acos(num / magAB * magBC);
+
+    // var AB = Math.sqrt(Math.pow(M.x - L.x, 2) + Math.pow(M.y - L.y, 2));    
+    // var BC = Math.sqrt(Math.pow(M.x - R.x, 2) + Math.pow(M.y - R.y, 2)); 
+    // var AC = Math.sqrt(Math.pow(R.x - L.x, 2) + Math.pow(R.y - L.y, 2));
+    // return Math.acos((BC * BC + AB * AB - AC * AC) / (2 * BC * AB));
 }
 
-function distPoints(P1, P2){
+function distPointsXYZ(P1, P2){
     return Math.sqrt(Math.pow(P1.x - P2.x, 2) + Math.pow(P1.y - P2.y, 2) + Math.pow(P1.z - P2.z, 2));
+}
+
+function distPointsXZ(P1, P2){
+    return Math.sqrt(Math.pow(P1.x - P2.x, 2) + Math.pow(P1.z - P2.z, 2));
 }
 
 function rad_to_deg(A)
@@ -372,8 +395,8 @@ function rad_to_deg(A)
     return X;
 }
 
-// const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
-// const grid = new LandmarkGrid(landmarkContainer);
+const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
+const grid = new LandmarkGrid(landmarkContainer);
 
 const pose = new Pose({locateFile: (file) => {
     return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
