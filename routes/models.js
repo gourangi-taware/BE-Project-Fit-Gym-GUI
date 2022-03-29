@@ -25,6 +25,6 @@ router.get('/jumpingjacksmodel', (req, res) => {
 });
 
 router.get('/wall-push-ups-model', (req, res) => {
-    res.sendFile('bicepcurlmodel.html',{ root: path.join(__dirname, '../views')});  
+    res.sendFile('wall-push-ups-model.html',{ root: path.join(__dirname, '../views')});  
 });
 exports.routes = router;
