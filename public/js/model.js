@@ -128,7 +128,9 @@ function onResults(results) {
     }
     // console.log(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST].z);
     // console.log(distPointsXYZ(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER]));
-    console.log(rad_to_deg(find_angle_rad(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_ELBOW], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST])));
+    //console.log(rad_to_deg(find_angle_rad(results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_SHOULDER], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_ELBOW], results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST])));
+    console.log(((results.poseWorldLandmarks[POSE_LANDMARKS.LEFT_WRIST].z)+1)*10);
+    
     // pushUpsCheck(results.poseLandmarks);
 
     canvasCtx.restore();
