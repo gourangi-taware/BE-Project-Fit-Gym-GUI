@@ -57,6 +57,8 @@ let rightBicepCount = -1;
 let leftEccentric = false;
 let rightEccentric = false;
 
+let once = false;
+
 console.log(currentexercise);
 // console.log(rad_to_deg(find_angle_rad({x:0, y:0, z:0}, {x:1, y:0, z:0}, {x:1.5, y:(Math.pow(3, 0.5) / 2), z:0})));
 
@@ -249,27 +251,52 @@ function bicepCheck(poseLandmarks){
 
         // console.log("right:", rightBicepAngle);
         // console.log("------------------------------------");
-        
-        if (leftBicepAngle < 45 && !leftEccentric){
-            // console.log("REP DONE");
-            leftEccentric = true;
-        }
-        else if (leftEccentric && leftBicepAngle > 150 && leftBicepXDiff > 0 && leftBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
-            // console.log("Left:", leftBicepXDiff);
-            // console.log("Right:", rightBicepXDiff);
-            leftBicepCount += 1;
-            leftEccentric = false;
+        if (leftBicepAngle >= 55 && leftBicepAngle <= 155){
+            once = true;
         }
 
-        if (rightBicepAngle < 45 && !rightEccentric){
-            rightEccentric = true;
+        if (leftBicepAngle < 5){
+            // console.log("REP DONE");
+            if (!leftEccentric){
+                leftEccentric = true;
+                once = false;
+            }
+            else{
+                if (once){
+                    console.log("WRONG CONCENTRIC");
+                    once = false;
+                }
+            }
         }
-        else if (rightEccentric && rightBicepAngle > 150 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
-            rightBicepCount += 1;
-            rightEccentric = false;
+        else if (leftBicepAngle > 170 && leftBicepXDiff > 0 && leftBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
+            // console.log("Left:", leftBicepXDiff);
+            // console.log("Right:", rightBicepXDiff);
+            if (leftEccentric){
+                leftBicepCount += 1;
+                leftEccentric = false;
+                once = false;
+            }
+            else{
+                if (once){
+                    console.log("WRONG ECCENTRIC");
+                    once = false;
+                }
+            }
         }
-        canvasCtx.fillStyle = "#00FF00";
-        canvasCtx.fillRect(25, 25, 100, toRepMeter(rightBicepAngle, 100, 45, 150));
+
+        // if (!rightEccentric && angleRightDiff > 0){
+        //     console.log("CONCENTRIC INCOMPLETE");
+        // }
+        // else if(rightEccentric && angleRightDiff < 0){
+        //     console.log("ECCENTRIC INCOMPLETE");
+        // }
+        // else if (rightBicepAngle < 45 && !rightEccentric){
+        //     rightEccentric = true;
+        // }
+        // else if (rightEccentric && rightBicepAngle > 150 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
+        //     rightBicepCount += 1;
+        //     rightEccentric = false;
+        // }
     }
 
     // if (poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].visibility > 0.75){
