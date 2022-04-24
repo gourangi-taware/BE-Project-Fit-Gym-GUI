@@ -9,6 +9,8 @@ const { engine } = require('express-handlebars');
 var cookieParser = require('cookie-parser');
 const Clarifai = require('clarifai');
 const axios = require('axios');
+const d3 = require('d3')
+
 //mongo db connection
 mongoose.connect('mongodb://localhost:27017/fitapp');
 
@@ -33,8 +35,6 @@ app.use(function(req, res, next){
     delete req.session.sessionFlash;
     next();
 });
-
-
 
 //router pages
 const exercises = require("./routes/exercise");
@@ -64,15 +64,14 @@ app.get('/', (req, res) => {
 });
 app.get('/index.html', (req, res) => {
     res.render('index', { expressFlash: req.flash('success'), sessionFlash: res.locals.sessionFlash });
-
 });
 
 app.get('/exercise', (req, res) => {
     res.sendFile("exercise.html", { root: __dirname + "/views" });
 });
 
-app.get('/diet', (req, res) => {
-    res.sendFile("diet.html", { root: __dirname + "/views" });
+app.get('/testdiet', (req, res) => {
+    res.sendFile("testdiet.html", { root: __dirname + "/views" });
 });
 
 app.get('/profile', (req, res) => {
@@ -83,3 +82,6 @@ var port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("server running at port " + port));
 
+d3.csv('breakfast.csv', function(data){
+    console.log(data);
+})
