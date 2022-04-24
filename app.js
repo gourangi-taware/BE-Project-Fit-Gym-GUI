@@ -9,7 +9,6 @@ const { engine } = require('express-handlebars');
 var cookieParser = require('cookie-parser');
 const Clarifai = require('clarifai');
 const axios = require('axios');
-const d3 = require('d3')
 
 //mongo db connection
 mongoose.connect('mongodb://localhost:27017/fitapp');
@@ -81,7 +80,3 @@ app.get('/profile', (req, res) => {
 var port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log("server running at port " + port));
-
-d3.csv('breakfast.csv', function(data){
-    console.log(data);
-})
