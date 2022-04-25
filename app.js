@@ -10,6 +10,8 @@ var cookieParser = require('cookie-parser');
 const Clarifai = require('clarifai');
 const axios = require('axios');
 
+// console.log(d3);
+
 //mongo db connection
 mongoose.connect('mongodb://localhost:27017/fitapp');
 
@@ -37,7 +39,7 @@ app.use(function(req, res, next){
 
 //router pages
 const exercises = require("./routes/exercise");
-const models=require("./routes/models");
+const models = require("./routes/models");
 const register = require("./routes/register");
 
 app.use(express.json());
@@ -53,8 +55,8 @@ var appli = new Clarifai.App({apiKey: myClarifaiApiKey});
 
 //routes
 app.use("/exercise", exercises.routes);
-app.use("/models",models.routes);
-app.use("/register",register.routes);
+app.use("/models", models.routes);
+app.use("/register", register.routes);
 
 //routes
 app.get('/', (req, res) => {

@@ -58,9 +58,10 @@ let leftEccentric = false;
 let rightEccentric = false;
 
 let once = false;
+let leftOnce = false;
+let rightOnce = false;
 
 console.log(currentexercise);
-// console.log(rad_to_deg(find_angle_rad({x:0, y:0, z:0}, {x:1, y:0, z:0}, {x:1.5, y:(Math.pow(3, 0.5) / 2), z:0})));
 
 function onResults(results) {
     canvasCtx.save();
@@ -157,7 +158,7 @@ function squatCheck(poseLandmarks){
         console.log("Right Knee To Toe:", rightKneeToToeDist);
         // console.log("-------------------------------------------------------------------------------------------------------------------");
 
-        if ((legDist / shoulderDist) >= 1.4 && (legDist / shoulderDist) <= 1.5){
+        if (Math.abs(legDist - shoulderDist) < 0.1){
             console.log("ALL GOOD");
         }
         else{
@@ -165,12 +166,30 @@ function squatCheck(poseLandmarks){
             return;
         }
 
-        if (!eccentric && rightKneeAngle > 175){
-            count += 1;
-            eccentric = true;
+        if (rightKneeAngle >= 100 && rightKneeAngle <= 165){
+            once = true;
         }
-        else if (eccentric && rightKneeAngle < 90){
-            eccentric = false;
+
+        if (rightKneeAngle > 175){
+            if (!eccentric){
+                count += 1;
+                eccentric = true;
+                once = false;
+            }
+            else if (once){
+                console.log("WRONG CONCENTRIC");
+                once = false;
+            }
+        }
+        else if (rightKneeAngle < 90){
+            if (eccentric){
+                eccentric = false;
+                once = false;
+            }
+            else if (once){
+                console.log("WRONG ECCENTRIC");
+                once = false;
+            }
         }
 
         console.log(legDist - shoulderDist);    
@@ -185,7 +204,7 @@ function squatCheck(poseLandmarks){
     }
 }
 
-function lungesCheck(poseLandmarks){
+function rightLungesCheck(poseLandmarks){
     var audio = new Audio('https://interactive-examples.mdn.mozilla.net/media/cc0-audio/t-rex-roar.mp3');
     audio.play();
     if (poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].visibility > 0.75){
@@ -200,28 +219,35 @@ function lungesCheck(poseLandmarks){
         let thighDist = Math.abs(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].x - poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].x);
         let lowerDist = Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_KNEE].x - poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].x);
         
-        if (!eccentric && rightKneeAngle > 100){
-            
-           
-            
+        // Right 
+        if (rightKneeAngle > 100){
+            if (!eccentric){
                 console.log("One rep");
                 count += 1;
-                flag=1;
                 eccentric = true;
-            
-            
-        }
-        else if (eccentric && rightKneeAngle < 94){
-            console.log(Math.abs(thighDist - lowerDist));
-            if(Math.abs(thighDist - lowerDist)>0.06)
-            {
-                console.log("Distance between legs should be approximately be equal to length of thigh");
+                once = false;
             }
-            else{
-                eccentric=false;
+            else if (once){
+                console.log("WRONG CONCENTRIC");
+                once = false;
             }
         }
-        
+        else if (rightKneeAngle < 94){
+            if (eccentric){
+                console.log(Math.abs(thighDist - lowerDist));
+                if(Math.abs(thighDist - lowerDist)>0.06)
+                {
+                    console.log("Distance between legs should be approximately be equal to length of thigh");
+                }
+                else{
+                    eccentric=false;
+                }
+            }
+            else if (once){
+                console.log("WRONG ECCENTRIC");
+                once = false;
+            }
+        }
     }
 }
 
@@ -252,19 +278,19 @@ function bicepCheck(poseLandmarks){
         // console.log("right:", rightBicepAngle);
         // console.log("------------------------------------");
         if (leftBicepAngle >= 55 && leftBicepAngle <= 155){
-            once = true;
+            leftOnce = true;
         }
 
         if (leftBicepAngle < 5){
             // console.log("REP DONE");
             if (!leftEccentric){
                 leftEccentric = true;
-                once = false;
+                leftOnce = false;
             }
             else{
-                if (once){
+                if (leftOnce){
                     console.log("WRONG CONCENTRIC");
-                    once = false;
+                    leftOnce = false;
                 }
             }
         }
@@ -274,12 +300,45 @@ function bicepCheck(poseLandmarks){
             if (leftEccentric){
                 leftBicepCount += 1;
                 leftEccentric = false;
-                once = false;
+                leftOnce = false;
             }
             else{
-                if (once){
+                if (leftOnce){
                     console.log("WRONG ECCENTRIC");
-                    once = false;
+                    leftOnce = false;
+                }
+            }
+        }
+
+        if (rightBicepAngle >= 55 && rightBicepAngle <= 155){
+            rightOnce = true;
+        }
+
+        if (rightBicepAngle < 5){
+            // console.log("REP DONE");
+            if (!rightEccentric){
+                rightEccentric = true;
+                rightOnce = false;
+            }
+            else{
+                if (rightOnce){
+                    console.log("WRONG CONCENTRIC");
+                    rightOnce = false;
+                }
+            }
+        }
+        else if (rightBicepAngle > 170 && leftBicepXDiff > 0 && leftBicepXDiff < 0.1 && rightBicepXDiff > 0 && rightBicepXDiff < 0.1){
+            // console.log("Left:", leftBicepXDiff);
+            // console.log("Right:", rightBicepXDiff);
+            if (rightEccentric){
+                rightBicepCount += 1;
+                rightEccentric = false;
+                rightOnce = false;
+            }
+            else{
+                if (rightOnce){
+                    console.log("WRONG ECCENTRIC");
+                    rightOnce = false;
                 }
             }
         }
@@ -421,7 +480,6 @@ function rad_to_deg(A)
     let X = A * 180/Math.PI;
     return X;
 }
-
 // const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
 // const grid = new LandmarkGrid(landmarkContainer);
 
