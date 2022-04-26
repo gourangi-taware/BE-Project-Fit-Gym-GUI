@@ -72,7 +72,20 @@
 			<h1 class="display-9">CALORIE COUNT : </h1>
 		</div>
 	</div>
+	<script>
+		//var audio = new Audio('/audios/bicepCurl.mp3');
+		//audio.muted = true;
+        //audio.play();
+		window.onload = function() {
+			
+			var audio = document.createElement("AUDIO")
+			document.body.appendChild(audio);
+			audio.src = "/audios/bicepCurl.mp3"
+			audio.play()
+		}
+		
 
+	</script>
 	<script type="text/javascript">
 		var video = document.querySelector("#videoModel");
 		if (navigator.mediaDevices.getUserMedia) {
@@ -182,6 +195,7 @@
 	<script src="../js/model.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.min.js" integrity="sha512-NxocnqsXP3zm0Xb42zqVMvjQIktKEpTIbCXXyhBPxqGZHqhcOXHs4pXI/GoZ8lE+2NJONRifuBpi9DxC58L0Lw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 	<script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js"></script>
+	
 </body>
 
 </html>
