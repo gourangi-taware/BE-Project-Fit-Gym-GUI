@@ -7,6 +7,7 @@ const rightCounterElement = document.getElementById('rightCounter');
 const startElement = document.getElementsByClassName('buttonPlay')[0];
 
 var currentexercise;
+var bicepCurlArmsCloserCorrector = new Audio('../audios/BicepCurl/BicepArmsCloserCorrector.mp3')
 var bicepCurlErrorConcentric = new Audio('../audios/BicepCurl/bicepCurlErrorConcentric.mp3');
 var bicepCurlErrorEccentric = new Audio('../audios/BicepCurl/bicepCurlErrorEccentric.mp3');
 var visibilityCorrectorAudio = new Audio('../audios/visibilityCorrector.mp4');
@@ -16,14 +17,27 @@ var squatLegDistanceCorrectorAudio = new Audio('../audios/Squats/SquatLegDistanc
 var lungesDistanceCorrectorAudio = new Audio('../audios/Lunges/LungesDistanceCorrector.mp3');
 var lungesEccentricCorrectorAudio = new Audio('../audios/Lunges/LungesEccentricCorrector.mp3');
 var lungesConcentricCorrectorAudio = new Audio('../audios/Lunges/LungesConcentricCorrector.mp3');
+var tingSoundAudio = new Audio('../audios/TingSound.mp3');
+
+var allAudios = [
+    {key: 'bicepCurlErrorConcentric', sound: bicepCurlErrorConcentric},
+    {key: 'bicepCurlErrorEccentric', sound: bicepCurlErrorEccentric},
+    {key: 'visibilityCorrectorAudio', sound: visibilityCorrectorAudio},
+    {key: 'squatConcentricCorrectorAudio', sound: squatConcentricCorrectorAudio},
+    {key: 'squatEccentricCorrectorAudio', sound: squatEccentricCorrectorAudio},
+    {key: 'squatLegDistanceCorrectorAudio', sound: squatLegDistanceCorrectorAudio},
+    {key: 'lungesDistanceCorrectorAudio', sound: lungesDistanceCorrectorAudio},
+    {key: 'lungesEccentricCorrectorAudio', sound: lungesEccentricCorrectorAudio},
+    {key: 'lungesConcentricCorrectorAudio', sound: lungesConcentricCorrectorAudio},
+    {key: 'bicepCurlArmsCloserCorrector', sound: bicepCurlArmsCloserCorrector},
+    {key: 'tingSoundAudio', sound: tingSoundAudio}
+];
 
 startElement.onclick = function fun()
 {   
     var location=window.location.href;
     if(location=="http://localhost:5000/models/bicepcurlmodel")
     {
-        // var audio = new Audio('../audios/bicepCurl.mp3');
-        // audio.play();
         currentexercise="BicepCurl";
     }
     else if(location=="http://localhost:5000/models/squatsmodel")
@@ -174,7 +188,7 @@ function squatCheck(poseLandmarks){
 
         if (Math.abs(legDist - shoulderDist) >= 0.1){
             console.log("Keep distance shoulder width.");
-            squatLegDistanceCorrectorAudio.play();
+            playSound('squatLegDistanceCorrectorAudio');
             return;
         }
 
@@ -184,13 +198,14 @@ function squatCheck(poseLandmarks){
 
         if (rightKneeAngle > 175){
             if (!eccentric){
+                playSound('tingSoundAudio');
                 count += 1;
                 eccentric = true;
                 once = false;
             }
             else if (once){
                 console.log("WRONG CONCENTRIC");
-                squatConcentricCorrectorAudio.play();
+                playSound('squatConcentricCorrectorAudio');
                 once = false;
             }
         }
@@ -201,7 +216,7 @@ function squatCheck(poseLandmarks){
             }
             else if (once){
                 console.log("WRONG ECCENTRIC");
-                squatEccentricCorrectorAudio.play();
+                playSound('squatEccentricCorrectorAudio');
                 once = false;
             }
         }
@@ -215,7 +230,7 @@ function squatCheck(poseLandmarks){
         // canvasCtx.fillRect(25, 150, 100, 100 - toRepMeter(rightKneeAngle, 100, 90, 180));
     }
     else{
-        visibilityCorrectorAudio.play();
+        playSound('visibilityCorrectorAudio');
     }
 }
 
@@ -240,13 +255,14 @@ function rightLungesCheck(poseLandmarks){
         if (rightKneeAngle > 100){
             if (!eccentric){
                 console.log("One rep");
+                playSound('tingSoundAudio');
                 count += 1;
                 eccentric = true;
                 once = false;
             }
             else if (once){
                 console.log("WRONG CONCENTRIC");
-                lungesConcentricCorrectorAudio.play();
+                playSound('lungesConcentricCorrectorAudio');
                 once = false;
             }
         }
@@ -256,7 +272,7 @@ function rightLungesCheck(poseLandmarks){
                 if(Math.abs(thighDist - lowerDist) > 0.06)
                 {
                     console.log("Distance between legs should be approximately be equal to length of thigh");
-                    lungesDistanceCorrectorAudio.play();
+                    playSound('lungesDistanceCorrectorAudio');
                 }
                 else{
                     eccentric = false;
@@ -264,13 +280,13 @@ function rightLungesCheck(poseLandmarks){
             }
             else if (once){
                 console.log("WRONG ECCENTRIC");
-                lungesEccentricCorrectorAudio.play();
+                playSound('lungesEccentricCorrectorAudio');
                 once = false;
             }
         }
     }
     else{
-        visibilityCorrectorAudio.play();
+        playSound('visibilityCorrectorAudio');
     }
 }
 
@@ -294,16 +310,21 @@ function bicepCheck(poseLandmarks){
         let leftBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.LEFT_WRIST].x);
         let rightBicepXDiff = Math.abs(poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].x - poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].x);
 
-        console.log(leftBicepAngle);
-        // console.log(leftBicepXDiff);
-        // console.log(rightBicepXDiff);
-        // console.log("----------------------------");
+        console.log(leftBicepXDiff);
+        console.log(rightBicepXDiff);
+        console.log("----------------------------");
 
         // console.log("right:", rightBicepAngle);
         // console.log("------------------------------------");
         if (leftBicepAngle >= 45 && leftBicepAngle <= 165){
             onceL = true;
         }
+
+        // if ((leftBicepXDiff > 0.05 || rightBicepXDiff > 0.05)){
+        //     console.log("Keey your hands closer to your waist");
+        //     playSound('bicepCurlArmsCloserCorrector');
+        //     return;
+        // }
 
         if (leftBicepAngle < 5){
             // console.log("REP DONE");
@@ -316,17 +337,18 @@ function bicepCheck(poseLandmarks){
                     console.log("WRONG Left CONCENTRIC");
                     if (bicepCurlErrorConcentric.paused && bicepCurlErrorEccentric.paused)
                     {
-                        bicepCurlErrorConcentric.play();
+                        playSound('bicepCurlErrorConcentric');
                     }
                     
                     onceL = false;
                 }
             }
         }
-        else if (leftBicepAngle > 170 && leftBicepXDiff > 0 && leftBicepXDiff < 0.3 && rightBicepXDiff > 0 && rightBicepXDiff < 0.3){
+        else if (leftBicepAngle > 170){
             // console.log("Left:", leftBicepXDiff);
             // console.log("Right:", rightBicepXDiff);
             if (leftEccentric){
+                playSound('tingSoundAudio');
                 leftBicepCount += 1;
                 console.log("L-"+leftBicepCount);
                 leftEccentric = false;
@@ -338,8 +360,7 @@ function bicepCheck(poseLandmarks){
                     
                     if (bicepCurlErrorEccentric.paused && bicepCurlErrorConcentric.paused)
                     {
-                        bicepCurlErrorEccentric.play();
-                        
+                        playSound('bicepCurlErrorEccentric');
                     }
                     onceL = false;
                 }
@@ -360,23 +381,22 @@ function bicepCheck(poseLandmarks){
             else{
                 if (onceR){
                     console.log("WRONG Right CONCENTRIC");
-                    
-                    
+
                     if (bicepCurlErrorConcentric.paused && bicepCurlErrorEccentric.paused)
                     {
-                        bicepCurlErrorConcentric.play();
-                        
+                        playSound('bicepCurlErrorConcentric');
                     }
                     
                     onceR = false;
                 }
             }
         }
-        else if (rightBicepAngle > 170 && leftBicepXDiff > 0 && leftBicepXDiff < 0.3 && rightBicepXDiff > 0 && rightBicepXDiff < 0.3){
+        else if (rightBicepAngle > 170){
             // console.log("Left:", leftBicepXDiff);
             // console.log("Right:", rightBicepXDiff);
             if (rightEccentric){
                 rightBicepCount += 1;
+                playSound('tingSoundAudio');
                 console.log("R-"+rightBicepCount);
                 rightEccentric = false;
                 onceR = false;
@@ -384,12 +404,7 @@ function bicepCheck(poseLandmarks){
             else{
                 if (onceR){
                     console.log("WRONG Right ECCENTRIC");
-                    
-                    if (bicepCurlErrorEccentric.paused && bicepCurlErrorConcentric.paused)
-                    {
-                        bicepCurlErrorEccentric.play();
-                        
-                    }
+                    playSound('bicepCurlErrorEccentric')
                     onceR = false;
                 }
             }
@@ -410,11 +425,7 @@ function bicepCheck(poseLandmarks){
     }
     else
     {
-        if (visibilityCorrectorAudio.paused)
-        {
-            visibilityCorrectorAudio.play();
-            
-        }
+        playSound('visibilityCorrectorAudio');
     }
 
     // if (poseLandmarks[POSE_LANDMARKS.RIGHT_WRIST].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_ELBOW].visibility > 0.75 && poseLandmarks[POSE_LANDMARKS.RIGHT_SHOULDER].visibility > 0.75){
@@ -538,6 +549,25 @@ function rad_to_deg(A)
 {
     let X = A * 180/Math.PI;
     return X;
+}
+
+function playSound(audioKey){
+    muteAll();
+    for (let audio of allAudios){
+        let res = audio.key.localeCompare(audioKey);
+        if (res === 0){
+            audio.sound.play();
+            return;
+        }
+    }
+    console.log("No sound found.");
+}
+
+function muteAll(){
+    for(let audio of allAudios){
+        audio.sound.pause();
+        audio.sound.currentTime = 0;
+    }
 }
 // const landmarkContainer = document.getElementsByClassName('landmark-grid-container')[0];
 // const grid = new LandmarkGrid(landmarkContainer);
