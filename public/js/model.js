@@ -247,7 +247,7 @@ function rightLungesCheck(poseLandmarks){
         let thighDist = Math.abs(poseLandmarks[POSE_LANDMARKS.RIGHT_HIP].x - poseLandmarks[POSE_LANDMARKS.RIGHT_KNEE].x);
         let lowerDist = Math.abs(poseLandmarks[POSE_LANDMARKS.LEFT_KNEE].x - poseLandmarks[POSE_LANDMARKS.RIGHT_ANKLE].x);
         
-        if (rightAngleKnee >= 94 && rightAngleKnee <= 100){
+        if (rightKneeAngle >= 94 && rightKneeAngle <= 100){
             once = true;
         }
 
