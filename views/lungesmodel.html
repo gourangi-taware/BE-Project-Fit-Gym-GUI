@@ -6,9 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>FIT-GYM</title>
 	<link rel="stylesheet" href="/css/model.css">
+	<link rel="stylesheet" href="./css/lunges.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+		<script src="https://codepen.io/GDKcode/pen/YzEBEWm#settings-css"></script>
+	</head>
 
 <body bgcolor="#ccbfbe">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -39,6 +41,15 @@
 
 		<div class="jumbotron jumbotron-fluid" id="xx">
 			<div class="container">
+				<div class="toggle-container">
+					<div class="toggle-name" id="nameOne">Me</div>
+					<input type="checkbox" id="allTasks" class="check-toggle" [checked]="checkAll">
+					<label for="allTasks" class="check-label">
+						<div class="ball"></div>
+					</label>
+					<div class="toggle-name"  id="nameTwo">You</div>
+	
+				</div>
 				<div class="stopwatch">
 					<h1>Count:  </h1>
 					<h2 id="counter">0</h2>
